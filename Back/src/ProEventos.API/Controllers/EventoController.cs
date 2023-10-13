@@ -18,12 +18,22 @@ public class EventoController : ControllerBase
     [HttpGet("Get")]
     public IEnumerable<Evento> Get()
     {
-        return _context.Eventos;
+        return _context.Eventos.OrderBy(e => e.Tema).ToList();
     }
 
     [HttpGet("GetById/{id}")]
     public Evento? GetById(int id)
     {
-        return _context.Eventos.FirstOrDefault(evento => evento.EventoId == id);
+        return _context.Eventos.FirstOrDefault(e => e.EventoId == id);
     }
+
+    [HttpPost("Post")]
+    public string Post(Evento evento)
+    {
+        evento.EventoId = _context.Eventos.Count() + 1;
+        _context.Eventos.Add(evento);
+        
+        return _context.SaveChanges().ToString();
+    }
+    
 }
