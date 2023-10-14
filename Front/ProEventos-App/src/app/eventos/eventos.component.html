@@ -3,9 +3,10 @@
 
 <div class="form-inline">
     <div class="col-6">
-        <div class="input-group mb-2">
+        <div class="input-group mb-2 border border-1 rounded border-success">
+            <span class="input-group-text text-success fw-bold">Filtro: </span>
             <input type="text" class="form-control mr-2 col-6" placeholder="Buscar" [(ngModel)]="filtroLista">
-            <button class="btn btn-outline-success input-group-text col-2 " style="min-width: 100px">Buscar</button>
+            <!-- <button class="btn btn-outline-success input-group-text col-2 " style="min-width: 100px">Buscar</button> -->
         </div>
     </div>
 </div>
@@ -45,7 +46,7 @@
             <td>{{e.qtdPessoas}}</td>
             <td>{{e.lote}}</td>
             <td class="text-center">
-                <button class="btn btn-sm btn-primary">Editar</button>
+                <button class="btn btn-sm btn-primary me-2">Editar</button>
                 <button class="btn btn-sm btn-danger">Excluir</button>
             </td>
         </tr>
