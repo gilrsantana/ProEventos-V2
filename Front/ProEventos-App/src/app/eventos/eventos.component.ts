@@ -7,7 +7,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./eventos.component.scss'],
 })
 export class EventosComponent implements OnInit {
-  public eventos: any;
+  public eventos: any = [];
+  public eventosFiltrados: any = [];
+  widthImg: number = 80;
+  marginImg: number = 2;
+  isCollapsed = true;
+
+  private _filtroLista: string = '';
 
   constructor(private http: HttpClient) {}
 
@@ -16,14 +22,10 @@ export class EventosComponent implements OnInit {
   }
 
   public getEventos(): void {
-    // this.http.get('http://127.0.0.1:5207/Evento/Get')
-    // .subscribe(response => this.eventos = response,
-    //     error => console.log(error)
-    //   );
-
     this.http.get('http://127.0.0.1:5207/Evento/Get').subscribe({
       next: (response) => {
         this.eventos = response;
+        this.eventosFiltrados = this.eventos;
       },
       error: (error) => {
         console.log(error);
@@ -32,5 +34,23 @@ export class EventosComponent implements OnInit {
         console.log('Finalizado');
       },
     });
+  }
+
+  public get filtroLista(){
+    return this._filtroLista;
+  }
+
+  public set filtroLista(value: string){
+    this._filtroLista = value;
+    this.eventosFiltrados = this.filtroLista ? this.filtrarEventos(this.filtroLista) : this.eventos;
+  }
+
+  public filtrarEventos(filtrarPor: string): any {
+    filtrarPor = filtrarPor.toLocaleLowerCase();
+    return this.eventos.filter(
+      (evento: { tema: string; local: string }) =>
+        evento.tema.toLocaleLowerCase().indexOf(filtrarPor) !== -1 ||
+        evento.local.toLocaleLowerCase().indexOf(filtrarPor) !== -1
+    );
   }
 }

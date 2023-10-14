@@ -35,5 +35,26 @@ public class EventoController : ControllerBase
         
         return _context.SaveChanges().ToString();
     }
+
+    [HttpPut("Put/{id}")]
+    public string Put(int id, Evento evento)
+    {
+        if (id != evento.EventoId)
+            return "Evento não encontrado";
+
+        _context.Eventos.Update(evento);
+        return _context.SaveChanges().ToString();
+    }
+
+    [HttpDelete("Delete/{id}")]
+    public string Delete(int id)
+    {
+        var evento = _context.Eventos.FirstOrDefault(e => e.EventoId == id);
+        if (evento == null)
+            return "Evento não encontrado";
+
+        _context.Eventos.Remove(evento);
+        return _context.SaveChanges().ToString();
+    }
     
 }
