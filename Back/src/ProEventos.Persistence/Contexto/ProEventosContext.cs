@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProEventos.Domain;
 
-namespace ProEventos.Persistence;
+namespace ProEventos.Persistence.Contexto;
 public class ProEventosContext : DbContext
 {
     public DbSet<Evento> Eventos { get; set; }
@@ -15,6 +15,6 @@ public class ProEventosContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<PalestranteEvento>()
-            .HasKey(PE => new { PE.IdEvento, PE.IdPalestrante });
+            .HasKey(pe => new { pe.IdEvento, pe.IdPalestrante });
     }
 }
