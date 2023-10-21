@@ -62,7 +62,7 @@ public class EventoService : IEventoService
             var evento = await _eventoPersist.GetEventoByIdAsync(eventoId, false);
             if (evento == null) throw new Exception("Evento para delete não encontrado.");
             
-            _geralPersist.Update(evento);
+            _geralPersist.Delete(evento);
             return await _geralPersist.SaveChangesAsync();
         }
         catch (Exception e)
@@ -71,18 +71,39 @@ public class EventoService : IEventoService
         }
     }
 
-    public Task<Evento[]> GetAllEventosAsync(bool incluirPalestrantes = false)
+    public async Task<Evento[]> GetAllEventosAsync(bool incluirPalestrantes = false)
     {
-        throw new NotImplementedException();
+        try
+        {
+            return await _eventoPersist.GetAllEventosAsync(incluirPalestrantes);
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
 
-    public Task<Evento[]> GetAllEventosByTemaAsync(string tema, bool incluirPalestrantes = false)
+    public async Task<Evento[]> GetAllEventosByTemaAsync(string tema, bool incluirPalestrantes = false)
     {
-        throw new NotImplementedException();
+        try
+        {
+            return await _eventoPersist.GetAllEventosByTemaAsync(tema, incluirPalestrantes);
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
 
-    public Task<Evento?> GetEventoByIdAsync(int eventoId, bool incluirPalestrantes = false)
+    public async Task<Evento?> GetEventoByIdAsync(int eventoId, bool incluirPalestrantes = false)
     {
-        throw new NotImplementedException();
+        try
+        {
+            return await _eventoPersist.GetEventoByIdAsync(eventoId, incluirPalestrantes);
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
 }

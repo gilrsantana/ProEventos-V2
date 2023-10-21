@@ -16,14 +16,14 @@ public class EventoPersist : IEventoPersist
     
     public async Task<Evento[]> GetAllEventosAsync(bool incluirPalestrantes = false)
     {
-        IQueryable<Evento> query = _context.Eventos
+        IQueryable<Evento> query = _context.Eventos.AsNoTracking()
             .Include(e => e.Lotes)
             .Include(e => e.RedesSociais);
 
         if (incluirPalestrantes)
         {
             query = query
-                .Include(e => e.PalestrantesEventos)
+                .Include(e => e.PalestrantesEventos)!
                 .ThenInclude(pe => pe.Palestrante);
         }
         
@@ -34,14 +34,14 @@ public class EventoPersist : IEventoPersist
 
     public async Task<Evento[]> GetAllEventosByTemaAsync(string tema, bool incluirPalestrantes = false)
     {
-        IQueryable<Evento> query = _context.Eventos
+        IQueryable<Evento> query = _context.Eventos.AsNoTracking()
             .Include(e => e.Lotes)
             .Include(e => e.RedesSociais);
 
         if (incluirPalestrantes)
         {
             query = query
-                .Include(e => e.PalestrantesEventos)
+                .Include(e => e.PalestrantesEventos)!
                 .ThenInclude(pe => pe.Palestrante);
         }
         
@@ -54,14 +54,14 @@ public class EventoPersist : IEventoPersist
     
     public async Task<Evento?> GetEventoByIdAsync(int idEvento, bool incluirPalestrantes = false)
     {
-        IQueryable<Evento> query = _context.Eventos
+        IQueryable<Evento> query = _context.Eventos.AsNoTracking()
             .Include(e => e.Lotes)
             .Include(e => e.RedesSociais);
 
         if (incluirPalestrantes)
         {
             query = query
-                .Include(e => e.PalestrantesEventos)
+                .Include(e => e.PalestrantesEventos)!
                 .ThenInclude(pe => pe.Palestrante);
         }
         

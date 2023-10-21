@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ProEventos.Persistence;
 using ProEventos.Persistence.Contexto;
 
 #nullable disable
@@ -12,8 +11,8 @@ using ProEventos.Persistence.Contexto;
 namespace ProEventos.Persistence.Migrations
 {
     [DbContext(typeof(ProEventosContext))]
-    [Migration("20231014230931_Initial")]
-    partial class Initial
+    [Migration("20231017074940_Initial migration")]
+    partial class Initialmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -73,9 +72,6 @@ namespace ProEventos.Persistence.Migrations
                     b.Property<int>("EventoId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("IdEvento")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -126,21 +122,13 @@ namespace ProEventos.Persistence.Migrations
 
             modelBuilder.Entity("ProEventos.Domain.PalestranteEvento", b =>
                 {
-                    b.Property<int>("IdEvento")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("IdPalestrante")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("EventoId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("PalestranteId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("IdEvento", "IdPalestrante");
-
-                    b.HasIndex("EventoId");
+                    b.HasKey("EventoId", "PalestranteId");
 
                     b.HasIndex("PalestranteId");
 
@@ -154,12 +142,6 @@ namespace ProEventos.Persistence.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("EventoId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("IdEvento")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("IdPalestrante")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Nome")
