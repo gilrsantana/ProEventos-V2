@@ -11,6 +11,7 @@ import { PalestrantesComponent } from './palestrantes/palestrantes.component';
 import { NavComponent } from './nav/nav.component';
 
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { EventoService } from './services/evento.service';
 
 @NgModule({
   declarations: [	
@@ -27,7 +28,15 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
     CollapseModule.forRoot(),
     FormsModule
   ],
-  providers: [],
+  /*
+  * A injeção de dependência pode ser feita de três formas:
+  * 1- No componente de serviço declarando que ele é injetado na raiz do projeto
+  * 2- No componente que irá utilizar o serviço
+  * 3- No app.module.ts, que tem as configurações gerais
+  * Por padrão, vamos adotar a opção 3 neste projeto
+  * A linha abaixo é a forma 3
+  */
+  providers: [EventoService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

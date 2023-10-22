@@ -486,3 +486,5 @@ Back/src/ProEventos.API/.idea/.idea.ProEventos.dir/.idea/indexLayout.xml
 Back/.idea/.idea.Back.dir/.idea/.gitignore
 Back/src/ProEventos.API/ProEventos.db-shm
 Back/src/ProEventos.API/ProEventos.db-wal
+Back/src/ProEventos.Persistence/Data/ProEventos.db-wal
+Back/src/ProEventos.Persistence/Data/ProEventos.db-shm

@@ -5,8 +5,7 @@
     <div class="col-6">
         <div class="input-group mb-2 border border-1 rounded border-success">
             <span class="input-group-text text-success fw-bold">Filtro: </span>
-            <input type="text" class="form-control mr-2 col-6" placeholder="Buscar" [(ngModel)]="filtroLista">
-            <!-- <button class="btn btn-outline-success input-group-text col-2 " style="min-width: 100px">Buscar</button> -->
+            <input type="text" class="form-control mr-2 col-6" placeholder="Buscar por tema ou local" [(ngModel)]="filtroLista">
         </div>
     </div>
 </div>
@@ -39,12 +38,12 @@
                     [isAnimated]="true"
                 > 
             </td>
-            <td>{{e.eventoId}}</td>
+            <td>{{e.id}}</td>
             <td>{{e.tema}}</td>
             <td>{{e.local}}</td>
             <td>{{e.dataEvento}}</td>
             <td>{{e.qtdPessoas}}</td>
-            <td>{{e.lote}}</td>
+            <td>{{e.lotes.length > 0 ? e.lotes[0].nome : 'Evento sem lotes'}}</td>
             <td class="text-center">
                 <button class="btn btn-sm btn-primary me-2">Editar</button>
                 <button class="btn btn-sm btn-danger">Excluir</button>
