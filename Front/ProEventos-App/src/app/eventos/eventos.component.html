@@ -15,6 +15,7 @@
         <tr>
             <th (click)="isCollapsed = !isCollapsed"> 
                 <button class="btn btn-sm btn-outline-light">
+                    <i class="{{isCollapsed ? 'fa fa-eye' : 'fa fa-eye-slash'}} "></i>
                     {{isCollapsed ? 'Expandir' : 'Recolher'}}
                 </button> 
             </th>
@@ -45,8 +46,12 @@
             <td>{{e.qtdPessoas}}</td>
             <td>{{e.lotes.length > 0 ? e.lotes[0].nome : 'Evento sem lotes'}}</td>
             <td class="text-center">
-                <button class="btn btn-sm btn-primary me-2">Editar</button>
-                <button class="btn btn-sm btn-danger">Excluir</button>
+                <button class="btn btn-sm btn-primary me-2">
+                    <i class="fa fa-edit"></i>
+                </button>
+                <button class="btn btn-sm btn-danger">
+                    <i class="fa fa-trash"></i>    
+                </button>
             </td>
         </tr>
     </tbody>
