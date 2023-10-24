@@ -42,14 +42,14 @@
             <td>{{e.id}}</td>
             <td>{{e.tema}}</td>
             <td>{{e.local}}</td>
-            <td>{{e.dataEvento}}</td>
+            <td>{{e.dataEvento | dateTimeFormat }}</td>
             <td>{{e.qtdPessoas}}</td>
-            <td>{{e.lotes.length > 0 ? e.lotes[0].nome : 'Evento sem lotes'}}</td>
+            <td>{{e.lotes.length > 0 ? (e.lotes[0].nome | uppercase)  : 'Evento sem lotes' | uppercase}}</td>
             <td class="text-center">
-                <button class="btn btn-sm btn-primary me-2">
+                <button class="btn btn-sm btn-primary me-2" tooltip="Editar">
                     <i class="fa fa-edit"></i>
                 </button>
-                <button class="btn btn-sm btn-danger">
+                <button class="btn btn-sm btn-danger" tooltip="Excluir">
                     <i class="fa fa-trash"></i>    
                 </button>
             </td>

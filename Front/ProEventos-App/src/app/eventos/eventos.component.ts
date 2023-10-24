@@ -19,11 +19,11 @@ import { Evento } from '../models/Evento';
 export class EventosComponent implements OnInit {
   public eventos: Evento[] = [];
   public eventosFiltrados: Evento[] = [];
-  public widthImg: number = 80;
-  public marginImg: number = 2;
+  public widthImg = 80;
+  public marginImg = 2;
   public isCollapsed = true;
 
-  private _filtroLista: string = '';
+  private _filtroLista = '';
 
   constructor(private eventoService: EventoService) {}
 
@@ -41,7 +41,7 @@ export class EventosComponent implements OnInit {
         console.log(error);
       },
       complete: () => {
-        console.log('Finalizado');
+        console.log('Eventos Carregados');
       }
     }
     this.eventoService.getEventos().subscribe(observer);
