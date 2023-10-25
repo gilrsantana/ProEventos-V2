@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
+
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { ToastrService } from 'ngx-toastr';
+
 import { EventoService } from '../services/evento.service';
 import { Evento } from '../models/Evento';
 
@@ -22,10 +26,14 @@ export class EventosComponent implements OnInit {
   public widthImg = 80;
   public marginImg = 2;
   public isCollapsed = true;
+  modalRef?: BsModalRef;
+  message?: string;
 
   private _filtroLista = '';
 
-  constructor(private eventoService: EventoService) {}
+  constructor(private eventoService: EventoService, 
+              private modalService: BsModalService,
+              private toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.getEventos();
@@ -63,5 +71,25 @@ export class EventosComponent implements OnInit {
         evento.tema.toLocaleLowerCase().indexOf(filtrarPor) !== -1 ||
         evento.local.toLocaleLowerCase().indexOf(filtrarPor) !== -1
     );
+  }
+
+  openModal(template: TemplateRef<unknown>) {
+    this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
+  }
+
+  confirm(): void {
+    this.message = 'Confirmed!';
+    this.modalRef?.hide();
+    this.toastr.success('O Evento foi removido com sucesso!', 'Removido');
+    this.toastr.info('O Evento foi removido com sucesso!', 'Removido');
+    this.toastr.warning('O Evento foi removido com sucesso!', 'Removido');
+    this.toastr.error('O Evento foi removido com sucesso!', 'Removido');
+    this.toastr.show('O Evento foi removido com sucesso!', 'Removido');
+    this.toastr.show('O Evento foi removido com sucesso!', 'Removido', {timeOut: 2000});
+  }
+ 
+  decline(): void {
+    this.message = 'Declined!';
+    this.modalRef?.hide();
   }
 }
