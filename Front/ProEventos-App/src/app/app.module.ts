@@ -1,5 +1,5 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -10,6 +10,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { ToastrModule } from 'ngx-toastr';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -46,6 +47,7 @@ import { DateTimeFormatPipe } from './helpers/date-time-format.pipe';
       progressBar: true,
       progressAnimation: 'decreasing'
     }),
+    NgxSpinnerModule,
     FormsModule
   ],
   /*
@@ -56,7 +58,8 @@ import { DateTimeFormatPipe } from './helpers/date-time-format.pipe';
   * Por padrão, vamos adotar a opção 3 neste projeto
   * A linha abaixo é a forma 3
   */
-  providers: [EventoService],
-  bootstrap: [AppComponent]
+ providers: [EventoService],
+ bootstrap: [AppComponent],
+ schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule { }
