@@ -41,10 +41,6 @@ export class EventosComponent implements OnInit {
   ngOnInit(): void {
     this.spinner.show();
     this.getEventos();
-    
-    setTimeout(() => {
-      this.spinner.hide();
-    }, 5000);
   }
 
   public getEventos(): void {
@@ -54,10 +50,11 @@ export class EventosComponent implements OnInit {
         this.eventosFiltrados = this.eventos;
       },
       error: (error: Error) => {
-        console.log(error);
+        this.spinner.hide();
+        this.toastr.error(`Erro ao carregar os eventos. ${error.message}`, 'Erro!');
       },
       complete: () => {
-        console.log('Eventos Carregados');
+        this.spinner.hide();
       }
     }
     this.eventoService.getEventos().subscribe(observer);
@@ -89,11 +86,10 @@ export class EventosComponent implements OnInit {
     this.message = 'Confirmed!';
     this.modalRef?.hide();
     this.toastr.success('O Evento foi removido com sucesso!', 'Removido');
-    this.toastr.info('O Evento foi removido com sucesso!', 'Removido');
-    this.toastr.warning('O Evento foi removido com sucesso!', 'Removido');
-    this.toastr.error('O Evento foi removido com sucesso!', 'Removido');
-    this.toastr.show('O Evento foi removido com sucesso!', 'Removido');
-    this.toastr.show('O Evento foi removido com sucesso!', 'Removido', {timeOut: 2000});
+    // this.toastr.info('O Evento foi removido com sucesso!', 'Removido');
+    // this.toastr.warning('O Evento foi removido com sucesso!', 'Removido');
+    // this.toastr.show('O Evento foi removido com sucesso!', 'Removido');
+    // this.toastr.show('O Evento foi removido com sucesso!', 'Removido', {timeOut: 2000});
   }
  
   decline(): void {
