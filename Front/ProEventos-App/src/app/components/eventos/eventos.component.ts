@@ -5,8 +5,8 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 
-import { EventoService } from '../services/evento.service';
-import { Evento } from '../models/Evento';
+import { EventoService } from '../../services/evento.service';
+import { Evento } from '../../models/Evento';
 
 @Component({
   selector: 'app-eventos',
@@ -66,7 +66,9 @@ export class EventosComponent implements OnInit {
 
   public set filtroLista(value: string){
     this._filtroLista = value;
-    this.eventosFiltrados = this.filtroLista ? this.filtrarEventos(this.filtroLista) : this.eventos;
+    this.eventosFiltrados = this.filtroLista ? 
+      this.filtrarEventos(this.filtroLista) : 
+      this.eventos;
   }
 
   public filtrarEventos(filtrarPor: string): Evento[] {
