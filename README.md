@@ -301,6 +301,15 @@
 > @import '../node_modules//@fortawesome/fontawesome-free/css/all.min.css';
 <br>
 
+- Referências externas de layout:
+
+> Bootsnipp
+
+> Bootswatch: `npm install bootswatch`
+
+> Adicionar a referência de estilo no arquivo styles.scss: `@import "../node_modules/bootswatch/dist/cerulean/bootstrap.min.css"`
+
+
 ## 5 - CLone do projeto
 
 - Execute o comando abaixo para fazer o clone do projeto no diretório de preferência de seu computador
@@ -371,4 +380,5 @@
 
 > dotnet add ProEventos.Application/ProEventos.Application.csproj reference ProEventos.Persistence
 
-> dotnet add ProEventos.Persistence/ProEventos.Persistence.csproj reference ProEventos.Domain 
+> dotnet add ProEventos.Persistence/ProEventos.Persistence.csproj reference ProEventos.Domain
+ 

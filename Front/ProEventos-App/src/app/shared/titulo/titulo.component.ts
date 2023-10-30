@@ -7,5 +7,7 @@ import { Component, Input } from '@angular/core';
 })
 export class TituloComponent {
   @Input() titulo:string | undefined;
-  public tituloSmall = 'Sua plataforma de eventos';
+  @Input() subtitulo = 'Desde 2023';
+  @Input() iconClass = 'fa fa-user';
+  @Input() botaoListar = false;
 }
