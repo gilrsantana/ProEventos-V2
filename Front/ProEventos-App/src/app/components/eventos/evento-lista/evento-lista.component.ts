@@ -1,4 +1,5 @@
 import { Component, TemplateRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -34,9 +35,11 @@ export class EventoListaComponent {
     private eventoService: EventoService,
     private modalService: BsModalService,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private router: Router
   ) {}
 
+  // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
   ngOnInit(): void {
     this.spinner.show();
     this.getEventos();
@@ -99,5 +102,9 @@ export class EventoListaComponent {
   decline(): void {
     this.message = 'Declined!';
     this.modalRef?.hide();
+  }
+
+  detalheEvento(id: number): void {
+    this.router.navigate([`eventos/detalhe/${id}`]);
   }
 }

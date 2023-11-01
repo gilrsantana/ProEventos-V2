@@ -16,7 +16,7 @@ export class TituloComponent {
 
   listar(): void {
     if (this.titulo) {
-      this.router.navigate([`/${this.titulo.toLowerCase()}/lista`]);
+      this.router.navigate([`${this.titulo.toLowerCase()}/lista`]);
     }
   }
 }
