@@ -80,8 +80,17 @@ export class PerfilComponent implements OnInit{
     return this.form.controls;
   }
 
-  public resetForm(): void {
+  public resetForm(event: any): void {
+    event.preventDefault();
     this.form.reset();
+  }
+
+  public onSubmit(): void {
+
+    this.validateForm();
+    if (this.form.valid) {
+      console.log('Enviado');
+    }
   }
 
   public validateForm(): void {
