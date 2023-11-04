@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using ProEventos.Application.Dtos;
 using ProEventos.Application.Interfaces;
-using ProEventos.Domain;
 
 namespace ProEventos.API.Controllers;
 
@@ -21,8 +21,8 @@ public class EventoController : ControllerBase
         try
         {
             var eventos = await _eventoService.GetAllEventosAsync(incluirPalestrantes);
-            if (eventos.Length == 0) return NotFound("Nenhum evento encontrado.");
-            
+            if (eventos.Length == 0) return NoContent();
+
             return Ok(eventos);
         }
         catch (Exception e)
@@ -38,7 +38,7 @@ public class EventoController : ControllerBase
         try
         {
             var evento = await _eventoService.GetEventoByIdAsync(id, incluirPalestrantes);
-            if (evento == null) return NotFound("Evento por id encontrado.");
+            if (evento == null) return NoContent();
             
             return Ok(evento);
         }
@@ -55,7 +55,7 @@ public class EventoController : ControllerBase
         try
         {
             var eventos = await _eventoService.GetAllEventosByTemaAsync(tema, incluirPalestrantes);
-            if (eventos.Length == 0) return NotFound("Eventos por tema não encontrados.");
+            if (eventos.Length == 0) return NoContent();
             
             return Ok(eventos);
         }
@@ -67,7 +67,7 @@ public class EventoController : ControllerBase
     }
 
     [HttpPost("Post")]
-    public async Task<IActionResult> Post(Evento model)
+    public async Task<IActionResult> Post(EventoDto model)
     {
         try
         {
@@ -84,7 +84,7 @@ public class EventoController : ControllerBase
     }
 
     [HttpPut("Put/{id}")]
-    public async Task<IActionResult> Put(int id, Evento model)
+    public async Task<IActionResult> Put(int id, EventoDto model)
     {
         try
         {
@@ -105,6 +105,9 @@ public class EventoController : ControllerBase
     {
         try
         {
+            var evento = await _eventoService.GetEventoByIdAsync(id);
+            if (evento == null) return NoContent();
+            
             var result = await _eventoService.DeleteEvento(id);
             return result == false 
                 ? BadRequest("Erro ao tentar remover evento.") 
