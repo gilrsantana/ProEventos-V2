@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-evento-detalhe',
@@ -9,7 +9,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 
 
 export class EventoDetalheComponent implements OnInit{
-  form: FormGroup;
+  
+  form!: FormGroup;
   
   minTemaLength = 3;
   maxTemaLength = 50;
@@ -17,15 +18,13 @@ export class EventoDetalheComponent implements OnInit{
   maxQtdPessoas = 120000;
 
 
-  constructor(private fb: FormBuilder) {
-    this.form = new FormGroup({});
-  }
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.validation();
   }
 
-  public validation(): void {
+  private validation(): void {
     this.form = this.fb.group({
       tema: ['', 
               [

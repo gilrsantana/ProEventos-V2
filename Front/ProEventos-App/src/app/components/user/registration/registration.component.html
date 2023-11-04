@@ -9,47 +9,125 @@
 
 	<div class="col-md-6">
 
-		<form class="p-1">
+		<form class="p-1" [formGroup]="form">
+			<!--
+                Teste para verificação dos campos de formulário 
+                <p>Form value: {{form.value | json}}</p>
+                <p>Form valid : {{form.status | json}}</p> 
+            -->
 			<div class="pb-2 d-block d-md-none">
 				<h3 class="border-bottom">Cadastro de Usuário</h3>
 			</div>
 			<div class="row">
 				<div class="form-group col-sm-6 mb-3">
-					<label for="txtFName" class="pb-1">Primeiro Nome</label>
-					<input type="text" name="txtFName" class="form-control" placeholder="Insira o Primeiro nome" />
+					<label for="txtFName" class="pb-1">Primeiro Nome:</label>
+					<input type="text" maxlength="{{constants.MAX_NAME_LENGTH}}" name="txtFName" class="form-control"
+						[ngClass]="{'is-invalid': controls['firstName'].errors && controls['firstName'].touched}"
+						formControlName="firstName" placeholder="Insira o Primeiro nome" />
+					<div *ngIf="controls['firstName'].errors?.['required']" class="invalid-feedback">
+						{{errorMessenger('Primeiro Nome', 'required')}}
+					</div>
+					<div *ngIf="controls['firstName'].errors?.['minlength']" class="invalid-feedback">
+						{{errorMessenger('Primeiro Nome', 'minlength', constants.MIN_NAME_LENGTH)}}
+					</div>
+					<div *ngIf="controls['firstName'].errors?.['maxlength']" class="invalid-feedback">
+						{{errorMessenger('Primeiro Nome', 'maxlength', constants.MAX_NAME_LENGTH)}}
+					</div>
+					<div *ngIf="controls['firstName'].errors?.['pattern']" class="invalid-feedback">
+						{{errorMessenger('Primeiro Nome', 'pattern')}}
+					</div>
 				</div>
 				<div class="form-group col-sm-6 mb-3">
-					<label for="txtLName" class="pb-1">Último nome</label>
-					<input type="text" name="txtLName" class="form-control" placeholder="Insira o Último nome" />
+					<label for="txtLName" class="pb-1">Último Nome:</label>
+					<input type="text" maxlength="{{constants.MAX_NAME_LENGTH}}" name="txtLName" class="form-control"
+						[ngClass]="{'is-invalid': controls['lastName'].errors && controls['lastName'].touched}"
+						formControlName="lastName" placeholder="Insira o Último nome" />
+					<div *ngIf="controls['lastName'].errors?.['required']" class="invalid-feedback">
+						{{errorMessenger('Último Nome', 'required')}}
+					</div>
+					<div *ngIf="controls['lastName'].errors?.['minlength']" class="invalid-feedback">
+						{{errorMessenger('Último Nome', 'minlength', constants.MIN_NAME_LENGTH)}}
+					</div>
+					<div *ngIf="controls['lastName'].errors?.['maxlength']" class="invalid-feedback">
+						{{errorMessenger('Último Nome', 'maxlength', constants.MAX_NAME_LENGTH)}}
+					</div>
+					<div *ngIf="controls['lastName'].errors?.['pattern']" class="invalid-feedback">
+						{{errorMessenger('Último Nome', 'pattern')}}
+					</div>
 				</div>
 			</div>
 			<div class="form-group mb-3">
-				<label for="txtEmail" class="pb-1">Email:</label>
-				<input class="form-control" type="text" name="txtEmail" placeholder="Insira o E-mail" />
+				<label for="txtEmail" class="pb-1">E-mail:</label>
+				<input type="text" name="txtEmail" class="form-control"
+					[ngClass]="{'is-invalid': controls['email'].errors && controls['email'].touched}"
+					formControlName="email" placeholder="Insira o E-mail" />
+				<div *ngIf="controls['email'].errors?.['required']" class="invalid-feedback">
+					{{errorMessenger('E-mail', 'required')}}
+				</div>
+				<div *ngIf="controls['email'].errors?.['email']" class="invalid-feedback">
+					{{errorMessenger('E-mail', 'email')}}
+				</div>
 			</div>
 			<div class="form-group mb-3">
 				<label for="txtUser" class="pb-1">Usuario:</label>
-				<input class="form-control" type="text" name="txUser" placeholder="Insira o nome de Usuário" />      
+				<input type="text" name="txUser" maxlength="{{constants.MAX_USER_LENGTH}}" class="form-control"
+					[ngClass]="{'is-invalid': controls['userName'].errors && controls['userName'].touched}"
+					formControlName="userName" placeholder="Insira o nome de Usuário" />
+				<div *ngIf="controls['userName'].errors?.['required']" class="invalid-feedback">
+					{{errorMessenger('Usuario', 'required')}}
+				</div>
+				<div *ngIf="controls['userName'].errors?.['minlength']" class="invalid-feedback">
+					{{errorMessenger('Usuario', 'minlength', constants.MIN_USER_LENGTH)}}
+				</div>
+				<div *ngIf="controls['userName'].errors?.['maxlength']" class="invalid-feedback">
+					{{errorMessenger('Usuario', 'maxlength', constants.MAX_USER_LENGTH)}}
+				</div>
+				<div *ngIf="controls['userName'].errors?.['pattern']" class="invalid-feedback">
+					{{errorMessenger('Usuario', 'pattern')}}
+				</div>
 			</div>
 			<div class="row">
 				<div class="form-group col-sm-6 mb-3">
 					<label for="txtPwd" class="pb-1">Senha:</label>
-					<input class="form-control" type="password" name="txtPwd" placeholder="Digite uma Senha" />
+					<input type="password" name="txtPwd" maxlength="{{constants.PASSWORD_MAX_LENGTH}}"
+						class="form-control"
+						[ngClass]="{'is-invalid': controls['password'].errors && controls['password'].touched}"
+						formControlName="password" placeholder="Digite uma Senha" />
+					<div *ngIf="controls['password'].errors?.['required']" class="invalid-feedback">
+						{{errorMessenger('Senha', 'required')}}
+					</div>
+					<div *ngIf="controls['password'].errors?.['pattern']" class="invalid-feedback"
+						[innerHTML]="errorMessenger('Senha', 'patternPwd')">
+					</div>
 				</div>
 				<div class="form-group col-sm-6 mb-3">
 					<label for="txtConfPwd" class="pb-1">Confirmar Senha:</label>
-					<input class="form-control" type="password" name="txtConfPwd" placeholder="Confirme a Senha" />
+					<input type="password" name="txtConfPwd" maxlength="{{constants.PASSWORD_MAX_LENGTH}}"
+						class="form-control"
+						[ngClass]="{'is-invalid': controls['confirmPassword'].errors && controls['confirmPassword'].touched}"
+						formControlName="confirmPassword" placeholder="Confirme a Senha" />
+					<div *ngIf="controls['confirmPassword'].errors?.['required']" class="invalid-feedback">
+						{{errorMessenger('Confirmar Senha', 'required')}}
+					</div>
+					<div *ngIf="controls['confirmPassword'].errors?.['mustMatch']" class="invalid-feedback">
+						{{errorMessenger('Confirmar Senha', 'mustMatch')}}
+					</div>
 				</div>
 			</div>
 			<div class="row p-1 mb-3">
 				<div class="custom-control custom-checkbox">
-					<input type="checkbox" class="custom-control-input me-1" id="customCheck1">
+					<input type="checkbox" class="custom-control-input me-1"
+						[ngClass]="{'is-invalid': controls['terms'].errors && controls['terms'].touched}"
+						id="customCheck1" formControlName="terms" />
 					<label for="" class="custom-control-label">Eu concordo com os <a href="#">Termos de Uso</a>.</label>
+					<div *ngIf="controls['terms'].errors?.['required']" class="invalid-feedback">
+						{{errorMessenger('Termos de Uso', 'requiredtrue')}}
+					</div>
 				</div>
 			</div>
 			<div class="row">
 				<div class="form-group col-12 mb-3">
-					<button class="btn btn-lg btn-success px-5 w-100">
+					<button class="btn btn-lg btn-success px-5 w-100" (click)="validateForm()">
 						Registar
 					</button>
 				</div>

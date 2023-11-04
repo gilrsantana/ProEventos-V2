@@ -31,6 +31,7 @@ import { EventoListaComponent } from './components/eventos/evento-lista/evento-l
 import { UserComponent } from './components/user/user.component';
 import { LoginComponent } from './components/user/login/login.component';
 import { RegistrationComponent } from './components/user/registration/registration.component';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 
 @NgModule({
   declarations: [	
@@ -67,7 +68,9 @@ import { RegistrationComponent } from './components/user/registration/registrati
     }),
     NgxSpinnerModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxMaskDirective,
+    NgxMaskPipe
   ],
   /*
   * A injeção de dependência pode ser feita de três formas:
@@ -77,7 +80,10 @@ import { RegistrationComponent } from './components/user/registration/registrati
   * Por padrão, vamos adotar a opção 3 neste projeto
   * A linha abaixo é a forma 3
   */
- providers: [EventoService],
+ providers: [
+  EventoService,
+  provideNgxMask()
+],
  bootstrap: [AppComponent],
  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
