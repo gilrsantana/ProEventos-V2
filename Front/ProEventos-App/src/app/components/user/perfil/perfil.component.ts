@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, AbstractControlOptions, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, AbstractControlOptions, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ValidatorField } from '@app/helpers/validator-field';
 import { Constants } from '@app/util/constants';
 
@@ -80,7 +80,7 @@ export class PerfilComponent implements OnInit{
     return this.form.controls;
   }
 
-  public resetForm(event: any): void {
+  public resetForm(event: Event): void {
     event.preventDefault();
     this.form.reset();
   }
@@ -98,5 +98,9 @@ export class PerfilComponent implements OnInit{
       this.form.markAllAsTouched();
       return;
     }
+  }
+
+  public cssValidator(campoForm: AbstractControl): { 'is-invalid': boolean | null } {
+    return { 'is-invalid': campoForm.errors && campoForm.touched };
   }
 }

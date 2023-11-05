@@ -8,9 +8,9 @@ import { Constants as AppConstants } from '../util/constants';
 export class DateTimeFormatPipe implements PipeTransform {
 
   transform(value: Date | undefined): string {
-    const datePipe: DatePipe = new DatePipe('en-US');
+    const datePipe: DatePipe = new DatePipe('pt-BR');
+    console.log('value: ', value)
     const result = datePipe.transform(value, AppConstants.DATE_TIME_FORMAT_BR) || '';
     return result;
   }
-
 }

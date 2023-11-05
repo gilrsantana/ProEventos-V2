@@ -59,7 +59,7 @@
 					<div class="form-group col-sm-5">
 						<label for="" class="mb-1">Primeiro Nome</label>
 						<input type="text" maxlength="{{constants.MAX_NAME_LENGTH}}" class="form-control"
-							[ngClass]="{'is-invalid': controls['firstName'].errors && controls['firstName'].touched }" 
+							[ngClass]="cssValidator(controls['firstName'])" 
 							formControlName="firstName"/>
 						<div *ngIf="controls['firstName'].errors?.['required']" class="invalid-feedback">
 							{{errorMessenger('Primeiro Nome', 'required')}}
@@ -78,7 +78,7 @@
 					<div class="form-group col-sm-5">
 						<label for="" class="mb-1">Último nome</label>
 						<input type="text" maxlength="{{constants.MAX_NAME_LENGTH}}" class="form-control"
-							[ngClass]="{'is-invalid': controls['lastName'].errors && controls['lastName'].touched }"
+							[ngClass]="cssValidator(controls['lastName'])"
 							formControlName="lastName" />
 						<div *ngIf="controls['lastName'].errors?.['required']" class="invalid-feedback">
 							{{errorMessenger('Último Nome', 'required')}}
@@ -99,7 +99,7 @@
 					<div class="form-group col-sm-5">
 						<label for="" class="mb-1">E-mail</label>
 						<input type="text" class="form-control"
-							[ngClass]="{'is-invalid': controls['email'].errors && controls['email'].touched }"
+							[ngClass]="cssValidator(controls['email'])"
 							formControlName="email" />
 							<div *ngIf="controls['email'].errors?.['required']" class="invalid-feedback">
 								{{errorMessenger('E-mail', 'required')}}
@@ -112,7 +112,7 @@
 						<label for="" class="mb-1">Telefone</label>
 							<input type="text" name="phone" id="phone" 
 								class="form-control" 
-								[ngClass]="{'is-invalid': controls['phone'].errors && controls['phone'].touched }"
+								[ngClass]="cssValidator(controls['phone'])"
 								formControlName='phone' 
 								[mask]="telMask">
 							<div *ngIf="controls['phone'].errors?.['required']" class="invalid-feedback">
@@ -133,7 +133,7 @@
 					<form-group class="col-12 my-sm-1 my-md-3">
 						<label for="" class="mb-1">Descrição</label>
 						<input type="text" class="form-control"
-							[ngClass]="{'is-invalid': controls['description'].errors && controls['description'].touched }"
+							[ngClass]="cssValidator(controls['description'])"
 							formControlName="description" />
 					</form-group>
 				</div>
@@ -145,7 +145,7 @@
 					<div class="form-group col-sm">
 						<label for="" class="mb-1">Senha</label>
 						<input type="password" class="form-control"
-							[ngClass]="{'is-invalid': controls['password'].errors && controls['password'].touched }"
+							[ngClass]="cssValidator(controls['password'])"
 							formControlName="password" />
 						<div *ngIf="controls['password'].errors?.['pattern']" class="invalid-feedback"
 							[innerHTML]="errorMessenger('Senha', 'patternPwd')">
@@ -154,7 +154,7 @@
 					<div class="form-group col-sm">
 						<label for="" class="mb-1">Confirmar Senha</label>
 						<input type="password" class="form-control"
-							[ngClass]="{'is-invalid': controls['confirmPassword'].errors && controls['confirmPassword'].touched }"
+							[ngClass]="cssValidator(controls['confirmPassword'])"
 							formControlName="confirmPassword" />
 						<div *ngIf="controls['confirmPassword'].errors?.['mustMatch']" class="invalid-feedback">
 								{{errorMessenger('Confirmar Senha', 'mustMatch')}}

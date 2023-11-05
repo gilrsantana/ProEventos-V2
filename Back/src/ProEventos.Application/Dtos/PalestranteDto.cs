@@ -10,6 +10,6 @@ public class PalestranteDto
     public string ImagemURL { get; set; } = string.Empty;
     public string Telefone { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
-    public IEnumerable<RedeSocialDto>? RedesSociais { get; set; }
-    public IEnumerable<EventoDto>? Eventos { get; set; }
+    public ICollection<RedeSocialDto>? RedesSociais { get; set; }
+    public ICollection<EventoDto>? Eventos { get; set; }
 }

@@ -29,8 +29,8 @@ public class EventoDto
      Display(Name = "e-mail"),
      EmailAddress(ErrorMessage = "O campo {0} está em formato inválido.")]
     public string Email { get; set; } = string.Empty;
-    IEnumerable<LoteDto> Lotes { get; set; } = new List<LoteDto>();
-    IEnumerable<RedeSocialDto> RedesSociais { get; set; } = new List<RedeSocialDto>();
-    IEnumerable<PalestranteDto> Palestrantes { get; set; } = new List<PalestranteDto>();
+    public IEnumerable<LoteDto> Lotes { get; set; } = new List<LoteDto>();
+    public IEnumerable<RedeSocialDto> RedesSociais { get; set; } = new List<RedeSocialDto>();
+    public IEnumerable<PalestranteDto> Palestrantes { get; set; } = new List<PalestranteDto>();
 
 }

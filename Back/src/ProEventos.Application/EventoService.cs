@@ -27,15 +27,12 @@ public class EventoService : IEventoService
         {
             var evento = _mapper.Map<Evento>(model);
 
-            _geralPersist.Add<Evento>(evento);
+            _geralPersist.Add(evento);
 
-            if (await _geralPersist.SaveChangesAsync())
-            {
-                var eventoRetorno = await _eventoPersist.GetEventoByIdAsync(evento.Id, false);
-                return _mapper.Map<EventoDto>(eventoRetorno);
-            }
+            if (!await _geralPersist.SaveChangesAsync()) return null;
+            var eventoRetorno = await _eventoPersist.GetEventoByIdAsync(evento.Id);
+            return _mapper.Map<EventoDto>(eventoRetorno);
 
-            return null;
         }
         catch (Exception e)
         {
@@ -47,17 +44,17 @@ public class EventoService : IEventoService
     {
         try
         {
-            var evento = await _eventoPersist.GetEventoByIdAsync(eventoId, false);
+            var evento = await _eventoPersist.GetEventoByIdAsync(eventoId);
             if (evento is null) return null;
 
             var eventoAtualizado = _mapper.Map<Evento>(model);
             eventoAtualizado.Id = evento.Id;
 
-            _geralPersist.Update<Evento>(eventoAtualizado);
+            _geralPersist.Update(eventoAtualizado);
 
             if (await _geralPersist.SaveChangesAsync())
             {
-                var eventoRetorno = await _eventoPersist.GetEventoByIdAsync(eventoAtualizado.Id, false);
+                var eventoRetorno = await _eventoPersist.GetEventoByIdAsync(eventoAtualizado.Id);
                 return _mapper.Map<EventoDto>(eventoRetorno);
             }
 
@@ -73,10 +70,10 @@ public class EventoService : IEventoService
     {
         try
         {
-            var evento = await _eventoPersist.GetEventoByIdAsync(eventoId, false);
+            var evento = await _eventoPersist.GetEventoByIdAsync(eventoId);
             if (evento == null) throw new Exception("Evento para delete não encontrado.");
             
-            _geralPersist.Delete<Evento>(evento);
+            _geralPersist.Delete(evento);
             return await _geralPersist.SaveChangesAsync();
         }
         catch (Exception e)
@@ -90,10 +87,8 @@ public class EventoService : IEventoService
         try
         {
             var eventos = await _eventoPersist.GetAllEventosAsync(incluirPalestrantes);
-            
-            return eventos is null ?
-                Array.Empty<EventoDto>() :
-                _mapper.Map<EventoDto[]>(eventos);
+            var resultado = _mapper.Map<EventoDto[]>(eventos);
+            return resultado;
         }
         catch (Exception e)
         {
@@ -107,9 +102,7 @@ public class EventoService : IEventoService
         {
             var eventos = await _eventoPersist.GetAllEventosByTemaAsync(tema, incluirPalestrantes);
             
-            return eventos is null ?
-                Array.Empty<EventoDto>() :
-                _mapper.Map<EventoDto[]>(eventos);
+            return _mapper.Map<EventoDto[]>(eventos);
         }
         catch (Exception e)
         {
@@ -122,8 +115,7 @@ public class EventoService : IEventoService
         try
         {
             var evento = await _eventoPersist.GetEventoByIdAsync(eventoId, incluirPalestrantes);
-            if (evento is null) return null;
-            return _mapper.Map<EventoDto>(evento);;
+            return evento is null ? null : _mapper.Map<EventoDto>(evento);
         }
         catch (Exception e)
         {
