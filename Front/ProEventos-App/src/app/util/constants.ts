@@ -1,6 +1,6 @@
 export class Constants {
     static readonly DATE_FORMAT_BR = 'dd/MM/yyyy';
-    static readonly DATE_TIME_FORMAT_BR = `${this.DATE_FORMAT_BR} hh:mm`;
+    static readonly DATE_TIME_FORMAT_BR = `${this.DATE_FORMAT_BR} HH:mm`;
     static readonly MIN_PHONE_LENGTH = 10;
     static readonly PASSWORD_MIN_LENGTH = 8;
     static readonly PASSWORD_MAX_LENGTH = 16;

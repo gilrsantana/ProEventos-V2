@@ -46,7 +46,7 @@
                 <td class="d-none d-md-table-cell" >{{e.qtdPessoas}}</td>
                 <td class="d-none d-md-table-cell">{{e.lotes.length > 0 ? (e.lotes[0].nome | uppercase) : 'Evento sem lotes' | uppercase}}</td>
                 <td class="text-center">
-                    <button class="btn btn-lg btn-danger" tooltip="Excluir" (click)="openModal(template)">
+                    <button class="btn btn-lg btn-danger" tooltip="Excluir" (click)="openModal($event, template, e.id)">
                         <i class="fa fa-trash"></i>
                     </button>
                 </td>
@@ -64,7 +64,7 @@
 
 <ng-template #template>
     <div class="modal-body text-center">
-      <p>Deseja realmente remover o Evento?</p>
+      <p>Deseja realmente remover o Evento de código {{eventoId}}?</p>
       <button type="button" class="btn btn-default" (click)="confirm()" >Sim</button>
       <button type="button" class="btn btn-primary" (click)="decline()" >Não</button>
     </div>

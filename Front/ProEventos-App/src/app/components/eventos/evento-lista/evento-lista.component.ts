@@ -26,9 +26,9 @@ export class EventoListaComponent {
   public widthImg = 80;
   public marginImg = 2;
   public isCollapsed = true;
-  modalRef?: BsModalRef;
-  message?: string;
-
+  public modalRef?: BsModalRef;
+  public message?: string;
+  public eventoId = 0;
   private _filtroLista = '';
 
   constructor(
@@ -85,7 +85,9 @@ export class EventoListaComponent {
     );
   }
 
-  openModal(template: TemplateRef<unknown>) {
+  openModal(event: Event, template: TemplateRef<unknown>, eventoId: number) {
+    event.stopPropagation();
+    this.eventoId = eventoId;
     this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
   }
 
