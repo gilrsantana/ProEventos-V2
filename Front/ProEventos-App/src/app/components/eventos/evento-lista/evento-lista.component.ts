@@ -91,14 +91,36 @@ export class EventoListaComponent {
     this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
   }
 
-  confirm(): void {
-    this.message = 'Confirmed!';
+  confirm(id: number): void {
     this.modalRef?.hide();
-    this.toastr.success('O Evento foi removido com sucesso!', 'Removido');
+    this.spinner.show();
+    this.deleteEvento(id);
+    // this.message = 'Confirmed!';
+    // this.modalRef?.hide();
+    // this.toastr.success('O Evento foi removido com sucesso!', 'Removido');
     // this.toastr.info('O Evento foi removido com sucesso!', 'Removido');
     // this.toastr.warning('O Evento foi removido com sucesso!', 'Removido');
     // this.toastr.show('O Evento foi removido com sucesso!', 'Removido');
     // this.toastr.show('O Evento foi removido com sucesso!', 'Removido', {timeOut: 2000});
+  }
+
+  public deleteEvento(id: number): void {
+    this.eventoId = id;
+    this.eventoService.deleteEvento(id).subscribe(
+      (result: boolean) => {
+        if(result === true) {
+          this.toastr.success('O Evento foi removido com sucesso!', 'Removido');
+          this.spinner.hide();
+          this.getEventos();
+        }
+      },
+      (error: Error) => {
+        this.toastr.error(`Erro ao tentar remover o Evento ${id}: ${error}`, 'Erro');
+      },
+      () => {
+        this.modalRef?.hide();
+      }
+    );
   }
 
   decline(): void {
