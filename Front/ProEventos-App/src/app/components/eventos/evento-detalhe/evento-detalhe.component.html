@@ -119,7 +119,7 @@
                 <button class="btn btn-outline-secondary mr-auto border" (click)="resetForm($event)">
                     Cancelar Alteração
                 </button>
-                <button class="btn btn-success" [disabled]="!form.valid">
+                <button class="btn btn-success" [disabled]="!form.valid" (click)="salvarEvento()">
                     Salvar Evento
                 </button>
             </div>
