@@ -1,11 +1,11 @@
 <div class="card rounded shadow-sm">
     <form [formGroup]="form">
         <div class="p-3">
-            <!--
+<!--             
                 Teste para verificação dos campos de formulário 
                 <p>Form value: {{form.value | json}}</p>
                 <p>Form valid : {{form.status | json}}</p> 
-            -->
+             -->
             <div class="row">
                 <div class="form-group col-md-12 mb-4">
                     <label for="" class="mb-1">Tema</label>
@@ -51,6 +51,7 @@
                         placeholder="Data e Hora do evento"
                         bsDatepicker 
                         [bsConfig]="bsConfig"
+                        
                         >
                     <div *ngIf="controls['dataEvento'].errors?.['required']" class="invalid-feedback">
                         Data e Hora é obrigatório
@@ -82,7 +83,8 @@
                         class="form-control" 
                         [ngClass]="cssValidator(controls['telefone'])"
                         formControlName="telefone" 
-                        placeholder="(00) 0000-0000">
+                        placeholder="(00) 0000-0000"
+                        [mask]="telMask">
                     <div *ngIf="controls['telefone'].errors?.['required']" class="invalid-feedback">
                         Telefone é obrigatório
                     </div>
@@ -119,7 +121,7 @@
                 <button class="btn btn-outline-secondary mr-auto border" (click)="resetForm($event)">
                     Cancelar Alteração
                 </button>
-                <button class="btn btn-success" [disabled]="!form.valid" (click)="salvarEvento()">
+                <button class="btn btn-success" (click)="salvarEvento()">
                     Salvar Evento
                 </button>
             </div>

@@ -22,6 +22,8 @@ export class EventoDetalheComponent implements OnInit{
   maxTemaLength = 50;
   minDataEvento = new Date().getDate() + 1;
   maxQtdPessoas = 120000;
+  telefone = '';
+  telMask= '(00) 0000-00000'
 
   constructor(private fb: FormBuilder, 
               private localeService: BsLocaleService,
@@ -35,6 +37,13 @@ export class EventoDetalheComponent implements OnInit{
   ngOnInit(): void {
     this.carregarEvento();
     this.validation();
+    this.form.get('telefone')?.valueChanges.subscribe(() => {
+      if (this.form.get('telefone')?.value[2] === "9") {
+        this.telMask = '(00) 0 0000-0000'
+      } else {
+         this.telMask = '(00) 0000-0000'
+      }
+    });
   }
 
   public carregarEvento(): void {
@@ -114,6 +123,10 @@ export class EventoDetalheComponent implements OnInit{
   }
 
   public salvarEvento(): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
     if (this.evento.id > 0) {
       this.salvarAlteracao(this.evento.id);
     } else {
@@ -121,19 +134,18 @@ export class EventoDetalheComponent implements OnInit{
     }
   }
 
-  public salvarAlteracao(id: number): void {
+  public salvarAlteracao(eventoId: number): void {
     this.spinner.show();
     if (this.form.valid) {
-      this.evento = { ...this.form.value };
-      this.evento.id = id;
+      this.evento = { id: eventoId, ...this.form.value };
       this.eventoService.putEvento(this.evento).subscribe({
         next: () => {
           this.toastr.success('Evento editado com sucesso!', 'Sucesso!');
         },
         error: (error: Error) => {
-          this.toastr.error('Erro ao tentar editar evento.' + error.message, 'Erro!');
           console.error(error);
           this.spinner.hide();
+          this.toastr.error('Erro ao tentar editar evento.' + error.message, 'Erro!');
         },
         complete: () => {
           this.spinner.hide();
@@ -151,8 +163,9 @@ export class EventoDetalheComponent implements OnInit{
           this.toastr.success('Evento salvo com sucesso!', 'Sucesso!');
         },
         error: (error: Error) => {
-          this.toastr.error('Erro ao tentar salvar evento.', 'Erro!');
           console.error(error);
+          this.spinner.hide();
+          this.toastr.error('Erro ao tentar salvar evento.', 'Erro!');
         },
         complete: () => {
           this.spinner.hide();
