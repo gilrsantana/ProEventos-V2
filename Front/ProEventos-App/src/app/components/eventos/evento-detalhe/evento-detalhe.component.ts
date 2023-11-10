@@ -24,6 +24,7 @@ export class EventoDetalheComponent implements OnInit{
   maxQtdPessoas = 120000;
   telefone = '';
   telMask= '(00) 0000-00000'
+  modoSalvar = 'post';
 
   constructor(private fb: FormBuilder, 
               private localeService: BsLocaleService,
@@ -50,6 +51,9 @@ export class EventoDetalheComponent implements OnInit{
     const eventoIdParam = this.router.snapshot.paramMap.get('id');
     if (eventoIdParam !== null) {
       this.spinner.show();
+
+      this.modoSalvar = 'put';
+
       this.eventoService.getEventoById(+eventoIdParam).subscribe({
         next: (evento: Evento) => {
           this.evento = { ...evento };
@@ -127,30 +131,30 @@ export class EventoDetalheComponent implements OnInit{
       this.form.markAllAsTouched();
       return;
     }
-    if (this.evento.id > 0) {
-      this.salvarAlteracao(this.evento.id);
+
+    this.evento = (this.modoSalvar === 'put' 
+        ? { id: this.evento.id, ...this.form.value } 
+        : this.form.value)    ;
+
+    if (this.modoSalvar === 'put' ) {
+      this.salvarAlteracao();
     } else {
       this.salvarNovoEvento();
     }
   }
 
-  public salvarAlteracao(eventoId: number): void {
+  public salvarAlteracao(): void {
     this.spinner.show();
     if (this.form.valid) {
-      this.evento = { id: eventoId, ...this.form.value };
-      this.eventoService.putEvento(this.evento).subscribe({
+      this.eventoService.put(this.evento).subscribe({
         next: () => {
           this.toastr.success('Evento editado com sucesso!', 'Sucesso!');
         },
         error: (error: Error) => {
           console.error(error);
-          this.spinner.hide();
           this.toastr.error('Erro ao tentar editar evento.' + error.message, 'Erro!');
-        },
-        complete: () => {
-          this.spinner.hide();
         }
-      });
+      }).add(()=> this.spinner.hide());
     }
   }
 
@@ -158,19 +162,15 @@ export class EventoDetalheComponent implements OnInit{
     this.spinner.show();
     if (this.form.valid) {
       this.evento = { ...this.form.value };
-      this.eventoService.postEvento(this.evento).subscribe({
+      this.eventoService.post(this.evento).subscribe({
         next: () => {
           this.toastr.success('Evento salvo com sucesso!', 'Sucesso!');
         },
         error: (error: Error) => {
           console.error(error);
-          this.spinner.hide();
           this.toastr.error('Erro ao tentar salvar evento.', 'Erro!');
-        },
-        complete: () => {
-          this.spinner.hide();
         }
-      });
+      }).add(()=> this.spinner.hide());
     }
   }
 }

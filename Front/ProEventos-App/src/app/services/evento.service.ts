@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { Evento } from '../models/Evento';
 
 @Injectable(
@@ -20,26 +20,38 @@ export class EventoService {
   constructor(private http: HttpClient) { }
 
   getEventos(): Observable<Evento[]> {
-    return this.http.get<Evento[]>(`${this.baseURL}/Get`);
+    return this.http
+      .get<Evento[]>(`${this.baseURL}/Get`)
+      .pipe(take(1));
   }
 
   getEventosByTema(tema: string): Observable<Evento[]> {
-    return this.http.get<Evento[]>(`${this.baseURL}/GetByTema/${tema}`);
+    return this.http
+      .get<Evento[]>(`${this.baseURL}/GetByTema/${tema}`)
+      .pipe(take(1));
   }
 
   getEventoById(id: number): Observable<Evento> {
-    return this.http.get<Evento>(`${this.baseURL}/GetById/${id}`);
+    return this.http
+      .get<Evento>(`${this.baseURL}/GetById/${id}`)
+      .pipe(take(1));
   }
   
-  postEvento(evento: Evento): Observable<Evento> {
-    return this.http.post<Evento>(`${this.baseURL}/Post`, evento);
+  post(evento: Evento): Observable<Evento> {
+    return this.http
+      .post<Evento>(`${this.baseURL}/Post`, evento)
+      .pipe(take(1));
   }
 
-  putEvento(evento: Evento): Observable<Evento> {
-    return this.http.put<Evento>(`${this.baseURL}/Put/${evento.id}`, evento);
+  put(evento: Evento): Observable<Evento> {
+    return this.http
+      .put<Evento>(`${this.baseURL}/Put/${evento.id}`, evento)
+      .pipe(take(1));
   }
 
   deleteEvento(id: number): Observable<any> {
-    return this.http.delete(`${this.baseURL}/Delete/${id}`);
+    return this.http
+      .delete(`${this.baseURL}/Delete/${id}`)
+      .pipe(take(1));
   }
 }

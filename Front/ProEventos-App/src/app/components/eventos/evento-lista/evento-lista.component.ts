@@ -53,10 +53,8 @@ export class EventoListaComponent {
       },
       error: (error: Error) => {
         this.spinner.hide();
-        this.toastr.error(
-          `Erro ao carregar os eventos. ${error.message}`,
-          'Erro!'
-        );
+        console.error(error);
+        this.toastr.error('Erro ao carregar os eventos.',  'Erro!');
       },
       complete: () => {
         this.spinner.hide();
@@ -106,21 +104,18 @@ export class EventoListaComponent {
 
   public deleteEvento(id: number): void {
     this.eventoId = id;
-    this.eventoService.deleteEvento(id).subscribe(
-      (result: boolean) => {
+    this.eventoService.deleteEvento(id).subscribe({
+      next: (result: boolean) => {
         if(result === true) {
           this.toastr.success('O Evento foi removido com sucesso!', 'Removido');
-          this.spinner.hide();
           this.getEventos();
         }
       },
-      (error: Error) => {
-        this.toastr.error(`Erro ao tentar remover o Evento ${id}: ${error}`, 'Erro');
-      },
-      () => {
-        this.modalRef?.hide();
+      error: (error: Error) => {
+        console.error(error);
+        this.toastr.error(`Erro ao tentar remover o Evento ${id}`, 'Erro');
       }
-    );
+    }).add(() => this.spinner.hide());
   }
 
   decline(): void {
