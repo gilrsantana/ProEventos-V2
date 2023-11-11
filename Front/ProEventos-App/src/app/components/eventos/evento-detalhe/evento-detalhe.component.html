@@ -51,7 +51,7 @@
                         placeholder="Data e Hora do evento"
                         bsDatepicker 
                         [bsConfig]="bsConfig"
-                        
+                        value="{{evento.dataEvento | dateTimeFormat}}"
                         >
                     <div *ngIf="controls['dataEvento'].errors?.['required']" class="invalid-feedback">
                         Data e Hora é obrigatório
