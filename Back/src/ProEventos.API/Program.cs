@@ -26,6 +26,9 @@ builder.Services.AddScoped<IPalestrantePersist, PalestrantePersist>();
 builder.Services.AddScoped<IEventoService, EventoService>();
 builder.Services.AddScoped<IPalestranteService, PalestranteService>();
 
+builder.Services.AddScoped<ILotePersist, LotePersist>();
+builder.Services.AddScoped<ILoteService, LoteService>();
+
 builder.Services.AddCors();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
