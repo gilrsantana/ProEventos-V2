@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using ProEventos.Application;
 using ProEventos.Application.Interfaces;
@@ -50,5 +51,9 @@ app.UseAuthorization();
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
 app.MapControllers();
+
+var cultureInfo = new CultureInfo("pt-BR");
+CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
 app.Run();
