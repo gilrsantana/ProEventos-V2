@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, Form, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Evento } from '@app/models/Evento';
+import { Lote } from '@app/models/Lote';
 import { EventoService } from '@app/services/evento.service';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -101,6 +102,22 @@ export class EventoDetalheComponent implements OnInit{
                 ]
               ],
       imagemURL: ['', Validators.required],
+      lotes: this.fb.array([]),
+    });
+  }
+
+  public adicionarLote(): void {
+    this.lotes.push(this.criarLote({id: 0} as Lote));
+  }
+
+  private criarLote(lote: Lote): FormGroup {
+    return this.fb.group({
+      id: [lote.id],
+      nome: [lote.nome, Validators.required],
+      preco: [lote.preco, Validators.required],
+      dataInicio: [lote.dataInicio],
+      dataFim: [lote.dataFim],
+      quantidade: [lote.quantidade, Validators.required],
     });
   }
 
@@ -115,6 +132,10 @@ export class EventoDetalheComponent implements OnInit{
       showWeekNumbers: false,
       containerClass:'theme-dark-blue',
       };
+  }
+
+  public get lotes(): FormArray {
+    return this.form.get('lotes') as FormArray;
   }
 
   public resetForm(event: Event): void {
