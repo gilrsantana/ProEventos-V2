@@ -1,8 +1,11 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
+
 
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
@@ -37,8 +40,11 @@ import { UserComponent } from './components/user/user.component';
 import { LoginComponent } from './components/user/login/login.component';
 import { RegistrationComponent } from './components/user/registration/registration.component';
 import { LoteService } from './services/lote.service';
+import { DateTimePipeBrPipe } from './helpers/date-time-pipe-br.pipe';
 
 defineLocale('pt-br', ptBrLocale);
+registerLocaleData(localePt);
+
 @NgModule({
   declarations: [	
     AppComponent,
@@ -55,6 +61,7 @@ defineLocale('pt-br', ptBrLocale);
     UserComponent,
     LoginComponent,
     RegistrationComponent,
+    DateTimePipeBrPipe,
    ],
   imports: [
     BrowserModule,
@@ -91,7 +98,8 @@ defineLocale('pt-br', ptBrLocale);
  providers: [
   EventoService,
   LoteService,
-  provideNgxMask()
+  provideNgxMask(),
+  { provide: LOCALE_ID, useValue: 'pt-BR' }
 ],
  bootstrap: [AppComponent],
  schemas: [CUSTOM_ELEMENTS_SCHEMA],
