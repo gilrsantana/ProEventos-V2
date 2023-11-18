@@ -1,7 +1,7 @@
 <div class="card rounded shadow-sm">
     <form [formGroup]="form">
         <div class="p-3">
-<!--             
+            <!--             
                 Teste para verificação dos campos de formulário 
                 <p>Form value: {{form.value | json}}</p>
                 <p>Form valid : {{form.status | json}}</p> 
@@ -128,8 +128,13 @@
         </div>
     </form>
 </div>
-<div class="card rounded shadow-sm mt-4">
-    <div class="p-3">
+
+<!-- Lotes -->
+
+<div class="card rounded shadow-sm mt-4" *ngIf="modoEditar">
+  <div class="p-3">
+      <!-- <p>Form value : {{form.controls['lotes'].value | json}}</p>
+      <p>Form valid : {{form.controls['lotes'].status | json}}</p> -->
       <div class="d-flex border-bottom justify-content-between">
         <h2 class="mr-auto">
           Lotes do Evento
@@ -156,30 +161,49 @@
             <div class="row">
               <div class="form-group col-md-4 mb-3">
                 <label for="" class="mb-2">Nome</label>
-
-
-                <!-- [ngClass]="cssValidator(lotes.controls[i].get('nome'))" -->
                 <input 
                   type="text" 
                   class="form-control" 
                   formControlName="nome" 
+                  [ngClass]="cssValidator(lotes.controls[i].get('nome'))"
                   placeholder="Lote">
               </div>
               <div class="form-group col-md-4 mb-3">
                 <label for="" class="mb-2">Quantidade</label>
-                <input type="text" class="form-control" formControlName="quantidade" placeholder="000">
+                <input 
+                  type="number" 
+                  class="form-control" 
+                  formControlName="quantidade" 
+                  [ngClass]="cssValidator(lotes.controls[i].get('quantidade'))"
+                  placeholder="000">
               </div>
               <div class="form-group col-md-4 mb-3">
                 <label for="" class="mb-2">Preço</label>
-                <input type="text" currencyMask class="form-control" formControlName="preco" placeholder="R$ 0,00">
+                <input 
+                  type="text"
+                  currencyMask 
+                  class="form-control" 
+                  formControlName="preco" 
+                  [ngClass]="cssValidator(lotes.controls[i].get('preco'))"
+                  placeholder="R$ 0,00">
               </div>
               <div class="form-group col-md-4 mb-3">
                 <label for="" class="mb-2">Data Início</label>
-                <input type="text" class="form-control" formControlName="dataInicio" placeholder="01/01/2019">
+                <input 
+                  type="date" 
+                  class="form-control" 
+                  formControlName="dataInicio" 
+                  [ngClass]="cssValidator(lotes.controls[i].get('dataInicio'))"
+                  placeholder="01/01/2019">
               </div>
               <div class="form-group col-md-4 mb-3">
                 <label for="" class="mb-2">Data Fim</label>
-                <input type="text" class="form-control" formControlName="dataFim" placeholder="01/01/2019">
+                <input 
+                  type="date" 
+                  class="form-control" 
+                  formControlName="dataFim" 
+                  [ngClass]="cssValidator(lotes.controls[i].get('dataFim'))"
+                  placeholder="01/01/2019">
               </div>
             </div>
           </fieldset>
@@ -196,9 +220,10 @@
       <button class="btn btn-outline-secondary mr-auto border">
         Cancelar Alteração
       </button>
-      <button class="btn btn-success">
+      <button (click)="salvarLotes()" class="btn btn-success">
         Salvar Lotes
       </button>
     </div>
   </div>
 </div>
+<br>
