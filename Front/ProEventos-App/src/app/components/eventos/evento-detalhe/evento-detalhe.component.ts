@@ -7,7 +7,7 @@ import { EventoService } from '@app/services/evento.service';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { LoteService } from '../../../services/lote.service';
+import { LoteService } from '@app/services/lote.service';
 
 @Component({
   selector: 'app-evento-detalhe',
@@ -17,7 +17,7 @@ import { LoteService } from '../../../services/lote.service';
 
 
 export class EventoDetalheComponent implements OnInit{
-  
+
   form!: FormGroup;
   evento = {} as Evento;
   eventoId = 0;
@@ -29,14 +29,14 @@ export class EventoDetalheComponent implements OnInit{
   telMask= '(00) 0000-00000'
   modoSalvar = 'post';
 
-  constructor(private fb: FormBuilder, 
+  constructor(private fb: FormBuilder,
               private localeService: BsLocaleService,
               private activatedRouter: ActivatedRoute,
               private eventoService: EventoService,
               private loteService: LoteService,
               private spinner: NgxSpinnerService,
               private toastr: ToastrService,
-              private router: Router) { 
+              private router: Router) {
     this.localeService.use('pt-br');
   }
 
@@ -55,7 +55,7 @@ export class EventoDetalheComponent implements OnInit{
   public carregarEvento(): void {
     this.eventoId = parseInt(this.activatedRouter.snapshot.paramMap.get('id') || '0');
     if (this.eventoId !== null && this.eventoId !== 0) {
-      this.spinner.show();
+      this.spinner.show().then();
 
       this.modoSalvar = 'put';
 
@@ -65,12 +65,12 @@ export class EventoDetalheComponent implements OnInit{
           this.form.patchValue(this.evento);
         },
         error: (error: Error) => {
-          this.spinner.hide();
+          this.spinner.hide().then();
           this.toastr.error('Erro ao tentar carregar evento.', 'Erro!');
           console.error(error);
         },
         complete: () => {
-          this.spinner.hide();
+          this.spinner.hide().then();
         }
       });
     }
@@ -78,30 +78,30 @@ export class EventoDetalheComponent implements OnInit{
 
   private validation(): void {
     this.form = this.fb.group({
-      tema: ['', 
+      tema: ['',
               [
-                Validators.required, 
-                Validators.minLength(this.minTemaLength), 
+                Validators.required,
+                Validators.minLength(this.minTemaLength),
                 Validators.maxLength(this.maxTemaLength)
               ]
             ],
       local: ['', Validators.required],
-      dataEvento: ['', 
+      dataEvento: ['',
                     [
-                      Validators.required, 
+                      Validators.required,
                       Validators.min(this.minDataEvento)
                     ]
                   ],
-      qtdPessoas: ['', 
+      qtdPessoas: ['',
                     [
-                      Validators.required, 
+                      Validators.required,
                       Validators.max(this.maxQtdPessoas)
                     ]
                   ],
       telefone: ['', Validators.required],
-      email: ['', 
+      email: ['',
                 [
-                  Validators.required, 
+                  Validators.required,
                   Validators.email
                 ]
               ],
@@ -120,7 +120,7 @@ export class EventoDetalheComponent implements OnInit{
       nome: [lote.nome, Validators.required],
       preco: [lote.preco, Validators.required],
       dataInicio: [
-        lote.dataInicio, 
+        lote.dataInicio,
         [
           Validators.required,
           Validators.min(this.minDataEvento)
@@ -136,8 +136,8 @@ export class EventoDetalheComponent implements OnInit{
   }
 
   public get bsConfig(): object {
-    return { isAnimated: true, 
-      adaptivePosition: true, 
+    return { isAnimated: true,
+      adaptivePosition: true,
       dateInputFormat: 'DD/MM/YYYY HH:mm',
       showWeekNumbers: false,
       containerClass:'theme-dark-blue',
@@ -151,7 +151,7 @@ export class EventoDetalheComponent implements OnInit{
   public get modoEditar(): boolean {
     return this.modoSalvar === 'put';
   }
-  
+
 
   public resetForm(event: Event): void {
     event.preventDefault();
@@ -159,9 +159,9 @@ export class EventoDetalheComponent implements OnInit{
   }
 
   public cssValidator(campoForm: AbstractControl | null): { 'is-invalid': boolean | null } {
-    
-    return campoForm === null 
-      ? { 'is-invalid': null } 
+
+    return campoForm === null
+      ? { 'is-invalid': null }
       : { 'is-invalid': campoForm.errors && campoForm.touched };
   }
 
@@ -171,8 +171,8 @@ export class EventoDetalheComponent implements OnInit{
       return;
     }
 
-    this.evento = (this.modoSalvar === 'put' 
-        ? { id: this.evento.id, ...this.form.value } 
+    this.evento = (this.modoSalvar === 'put'
+        ? { id: this.evento.id, ...this.form.value }
         : this.form.value)    ;
 
     if (this.modoSalvar === 'put' ) {
@@ -183,7 +183,7 @@ export class EventoDetalheComponent implements OnInit{
   }
 
   public salvarAlteracao(): void {
-    this.spinner.show();
+    this.spinner.show().then()
     if (this.form.valid) {
       this.eventoService.put(this.evento).subscribe({
         next: () => {
@@ -198,13 +198,13 @@ export class EventoDetalheComponent implements OnInit{
   }
 
   public salvarNovoEvento(): void {
-    this.spinner.show();
+    this.spinner.show().then();
     if (this.form.valid) {
       this.evento = { ...this.form.value };
       this.eventoService.post(this.evento).subscribe({
         next: (eventoRetornado: Evento) => {
           this.toastr.success('Evento salvo com sucesso!', 'Sucesso!');
-          this.router.navigate([`eventos/detalhe/${eventoRetornado.id}`]);
+          this.router.navigate([`eventos/detalhe/${eventoRetornado.id}`]).then();
         },
         error: (error: Error) => {
           console.error(error);
@@ -224,7 +224,7 @@ export class EventoDetalheComponent implements OnInit{
   }
 
   private saveLoteOnRemote(lotes: Lote[]): void {
-    this.spinner.show();
+    this.spinner.show().then();
     this.loteService.saveLote(this.eventoId, lotes).subscribe({
       next: () => {
         this.toastr.success('Lote salvo com sucesso!', 'Sucesso!');
