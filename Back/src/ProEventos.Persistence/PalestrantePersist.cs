@@ -22,7 +22,7 @@ public class PalestrantePersist : IPalestrantePersist
         if (incluirEventos)
         {
             query = query
-                .Include(p => p.PalestrantesEventos)
+                .Include(p => p.PalestrantesEventos)!
                 .ThenInclude(pe => pe.Evento);
         }
         
@@ -39,7 +39,7 @@ public class PalestrantePersist : IPalestrantePersist
         if (incluirEventos)
         {
             query = query
-                .Include(p => p.PalestrantesEventos)
+                .Include(p => p.PalestrantesEventos)!
                 .ThenInclude(pe => pe.Evento);
         }
         
@@ -58,7 +58,7 @@ public class PalestrantePersist : IPalestrantePersist
         if (incluirEventos)
         {
             query = query
-                .Include(p => p.PalestrantesEventos)
+                .Include(p => p.PalestrantesEventos)!
                 .ThenInclude(pe => pe.Evento);
         }
         

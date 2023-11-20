@@ -27,7 +27,7 @@ public class GeralPersist : IGeralPersist
         _context.Remove(entity);
     }
 
-    public void DeleteRange<T>(T[] entityArray) where T : class
+    public void DeleteRange<T>(object[] entityArray) where T : class
     {
         _context.RemoveRange(entityArray);
     }
