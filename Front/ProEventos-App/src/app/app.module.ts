@@ -41,6 +41,7 @@ import { LoginComponent } from './components/user/login/login.component';
 import { RegistrationComponent } from './components/user/registration/registration.component';
 import { LoteService } from './services/lote.service';
 import { DateTimePipeBrPipe } from './helpers/date-time-pipe-br.pipe';
+import { DatePipeBrPipe } from './helpers/date-pipe-br.pipe';
 
 defineLocale('pt-br', ptBrLocale);
 registerLocaleData(localePt);
@@ -62,6 +63,7 @@ registerLocaleData(localePt);
     LoginComponent,
     RegistrationComponent,
     DateTimePipeBrPipe,
+    DatePipeBrPipe,
    ],
   imports: [
     BrowserModule,

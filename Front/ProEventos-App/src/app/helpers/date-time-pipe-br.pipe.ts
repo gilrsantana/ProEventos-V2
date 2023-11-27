@@ -11,12 +11,12 @@ export class DateTimePipeBrPipe implements PipeTransform {
       return null;
     }
 
-    let [date, time] = value.split(' ');
-    let [day, month, year] = date.split('/');
-    let [hour, minute, second] = time.split(':');
-    let dateObj = new Date(+year, +month - 1, +day, +hour, +minute, +second);
+    const [date, time] = value.split(' ');
+    const [day, month, year] = date.split('/');
+    const [hour, minute, second] = time.split(':');
+    const dateObj = new Date(+year, +month - 1, +day, +hour, +minute, +second);
 
-    let datePipe = new DatePipe('pt-BR');
+    const datePipe = new DatePipe('pt-BR');
     return datePipe.transform(dateObj, 'dd/MM/yyyy HH:mm');
   }
 

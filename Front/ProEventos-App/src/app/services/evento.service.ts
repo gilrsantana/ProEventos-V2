@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, take } from 'rxjs';
 import { Evento } from '../models/Evento';
+import { environment } from '@environments/environment';
 
 @Injectable(
   /*
@@ -15,7 +16,7 @@ import { Evento } from '../models/Evento';
   */
 )
 export class EventoService {
-  baseURL = 'http://127.0.0.1:5207/Evento'
+  baseURL = `${environment.apiUrl}Evento`;
 
   constructor(private http: HttpClient) { }
 

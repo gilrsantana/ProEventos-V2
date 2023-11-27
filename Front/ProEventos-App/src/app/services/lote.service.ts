@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Lote } from '@app/models/Lote';
+import { environment } from '@environments/environment';
 import { take } from 'rxjs';
 
 @Injectable()
 export class LoteService {
-  baseURL = 'http:///127.0.0.1:5207/Lote';
-
+  baseURL = `${environment.apiUrl}Lote`;
+  
   constructor(private http: HttpClient) { }
 
   getLotesByEventoId(eventoId: number) {

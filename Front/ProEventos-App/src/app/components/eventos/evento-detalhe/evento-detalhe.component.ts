@@ -23,7 +23,6 @@ export class EventoDetalheComponent implements OnInit{
   eventoId = 0;
   minTemaLength = 3;
   maxTemaLength = 50;
-  minDataEvento = new Date().getDate() + 1;
   maxQtdPessoas = 120000;
   telefone = '';
   telMask= '(00) 0000-00000'
@@ -54,27 +53,46 @@ export class EventoDetalheComponent implements OnInit{
 
   public carregarEvento(): void {
     this.eventoId = parseInt(this.activatedRouter.snapshot.paramMap.get('id') || '0');
-    if (this.eventoId !== null && this.eventoId !== 0) {
+    if (this.eventoId !== null || this.eventoId === 0) {
       this.spinner.show().then();
 
+      if (this.eventoId > 0) {
       this.modoSalvar = 'put';
+      }
 
       this.eventoService.getEventoById(this.eventoId).subscribe({
         next: (evento: Evento) => {
           this.evento = { ...evento };
           this.form.patchValue(this.evento);
+          this.evento.lotes.forEach((lote: Lote) => {
+          this.lotes.push(this.criarLote(lote));
+          
+          //this.carregarLotes();
+
+          });
         },
         error: (error: Error) => {
           this.spinner.hide().then();
           this.toastr.error('Erro ao tentar carregar evento.', 'Erro!');
           console.error(error);
-        },
-        complete: () => {
-          this.spinner.hide().then();
         }
-      });
+      }).add(()=> this.spinner.hide());
     }
   }
+
+  // public carregarLotes(): void {
+  //   this.loteService.getLotesByEventoId(this.eventoId).subscribe({
+  //     next: (lotesRetorno: Lote[]) => {
+  //       lotesRetorno.forEach((lote: Lote) => {
+  //         this.lotes.push(this.criarLote(lote));
+  //       });
+  //     },
+  //     error: (error: Error) => {
+  //       this.toastr.error('Erro ao tentar carregar lotes.', 'Erro!');
+  //       console.error(error);
+  //     }
+  //   }).add(()=> this.spinner.hide());
+  // }
 
   private validation(): void {
     this.form = this.fb.group({
@@ -88,8 +106,7 @@ export class EventoDetalheComponent implements OnInit{
       local: ['', Validators.required],
       dataEvento: ['',
                     [
-                      Validators.required,
-                      Validators.min(this.minDataEvento)
+                      Validators.required
                     ]
                   ],
       qtdPessoas: ['',
@@ -119,14 +136,8 @@ export class EventoDetalheComponent implements OnInit{
       id: [lote.id],
       nome: [lote.nome, Validators.required],
       preco: [lote.preco, Validators.required],
-      dataInicio: [
-        lote.dataInicio,
-        [
-          Validators.required,
-          Validators.min(this.minDataEvento)
-        ]
-      ],
-      dataFim: [lote.dataFim],
+      dataInicio: [lote.dataInicio, Validators.required],
+      dataFim: [lote.dataFim, Validators.required],
       quantidade: [lote.quantidade, Validators.required],
     });
   }
@@ -142,6 +153,15 @@ export class EventoDetalheComponent implements OnInit{
       showWeekNumbers: false,
       containerClass:'theme-dark-blue',
       };
+  }
+
+  public get bsDateConfig(): object {
+    return { isAnimated: true,
+      adaptivePosition: true,
+      dateInputFormat: 'DD/MM/YYYY',
+      showWeekNumbers: false,
+      containerClass:'theme-dark-blue',
+    };
   }
 
   public get lotes(): FormArray {
