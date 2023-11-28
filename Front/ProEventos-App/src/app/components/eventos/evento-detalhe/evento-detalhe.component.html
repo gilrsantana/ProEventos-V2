@@ -157,7 +157,8 @@
                   tooltip="Excluir Lote"
                   [adaptivePosition]="false"
                   [delay]="500"
-                  placement="left">
+                  placement="left"
+                (click)="removerLote(i, template)">
                 <i class="fa fa-window-close my-1 me-2"></i>
                 <b class="d-none d-sm-block">Excluir</b>
               </button>
@@ -240,3 +241,11 @@
   </div>
 </div>
 <br>
+
+<ng-template #template>
+  <div class="modal-body text-center">
+      <p>Deseja realmente remover o Lote de nome <span style="font-weight: bold">{{loteAtual.nome}}</span>?</p>
+    <button type="button" class="btn btn-default" (click)="confirmDeleteLote()" >Sim</button>
+    <button type="button" class="btn btn-primary" (click)="declineDeleteLote()" >Não</button>
+  </div>
+</ng-template>
