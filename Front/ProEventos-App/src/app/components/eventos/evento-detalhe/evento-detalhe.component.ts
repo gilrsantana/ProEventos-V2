@@ -30,7 +30,7 @@ export class EventoDetalheComponent implements OnInit{
   modoSalvar = 'post';
   modalRef: BsModalRef = {} as BsModalRef
   loteAtual: Lote = {} as Lote;
-
+  indexLoteAtual = 0;
 
   constructor(private fb: FormBuilder,
               private localeService: BsLocaleService,
@@ -253,7 +253,6 @@ export class EventoDetalheComponent implements OnInit{
     this.loteService.saveLote(this.eventoId, lotes).subscribe({
       next: () => {
         this.toastr.success('Lote salvo com sucesso!', 'Sucesso!');
-        this.lotes.reset();
       },
       error: (error: Error) => {
         console.error(error);
@@ -265,6 +264,7 @@ export class EventoDetalheComponent implements OnInit{
   public removerLote(i: number, template: TemplateRef<any>) {
     this.loteAtual = this.lotes.controls[i].value;
     this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
+    this.indexLoteAtual = i;
   }
 
   public confirmDeleteLote() {
@@ -274,14 +274,14 @@ export class EventoDetalheComponent implements OnInit{
     this.loteService.deleteLote(this.eventoId, this.loteAtual.id).subscribe({
       next: () => {
         this.toastr.success('Lote removido com sucesso!', 'Sucesso!');
-        this.lotes.removeAt(this.loteAtual.id)
+        this.lotes.removeAt(this.indexLoteAtual)
       },
       error: (error: Error) => {
         console.error(error);
         this.toastr.error(`Erro ao tentar remover lote ${this.loteAtual.id}.`, 'Erro!');
       }
     }).add(()=> this.spinner.hide());
-    }
+  }
 
   public declineDeleteLote() {
     this.modalRef.hide();
