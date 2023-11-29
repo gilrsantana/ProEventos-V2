@@ -44,8 +44,8 @@ public class PalestrantePersist : IPalestrantePersist
         }
         
         query = query
-            .Where(p => p.Nome.ToLower().Contains(nome.ToLower()))
-            .OrderBy(p => p.Id);
+        .Where(p => p.User.PrimeiroNome.ToLower().Contains(nome.ToLower()))
+                    .OrderBy(p => p.Id);
         
         return await query.ToArrayAsync();
     }
