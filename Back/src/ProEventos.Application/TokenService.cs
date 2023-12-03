@@ -11,21 +11,21 @@ using ProEventos.Domain.Identity;
 
 namespace ProEventos.Application;
 
-public class TokeService : ITokenService
+public class TokenService : ITokenService
 {
     private readonly IMapper _mapper;
     private readonly UserManager<User> _userManager;
     private readonly IConfiguration _configuration;
     private readonly SymmetricSecurityKey _key;
-    
-    public TokeService(IConfiguration configuration, UserManager<User> userManager, IMapper mapper)
+
+    public TokenService(IConfiguration configuration, UserManager<User> userManager, IMapper mapper)
     {
         _configuration = configuration;
         _userManager = userManager;
         _mapper = mapper;
         _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["KeyToken"] ?? throw new InvalidOperationException()));
     }
-    
+
     public async Task<string> CreateToken(UserUpdateDto userUpdateDto)
     {
         var user = _mapper.Map<User>(userUpdateDto);
