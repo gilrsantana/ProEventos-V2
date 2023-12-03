@@ -23,7 +23,7 @@ public class TokenService : ITokenService
         _configuration = configuration;
         _userManager = userManager;
         _mapper = mapper;
-        _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["KeyToken"] ?? throw new InvalidOperationException()));
+        _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["TokenKey"] ?? throw new InvalidOperationException("TokenKey not found")));
     }
 
     public async Task<string> CreateToken(UserUpdateDto userUpdateDto)
@@ -33,7 +33,7 @@ public class TokenService : ITokenService
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user.UserName)
+            new Claim(ClaimTypes.Name, user.UserName ?? string.Empty),
         };
 
         var roles = await _userManager.GetRolesAsync(user);

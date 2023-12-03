@@ -26,8 +26,8 @@ public class UserPersist : GeralPersist, IUserPersist
     public async Task<User?> GetUserByUserNameAsync(string username)
     {
         return await _context.Users
-            .SingleOrDefaultAsync(u =>
-                u.UserName.Equals(username, StringComparison.CurrentCultureIgnoreCase));
+            .SingleOrDefaultAsync(u => u.UserName != null &&
+                u.UserName.ToLower().Equals(username.ToLower()));
     }
 
 
