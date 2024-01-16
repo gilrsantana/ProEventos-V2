@@ -11,18 +11,13 @@ namespace ProEventos.API.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class AccountController : ControllerBase
+public class AccountController(
+    ILogger<AccountController> logger,
+    IAccountService accountService,
+    ITokenService tokenService)
+    : ControllerBase
 {
-    private readonly ILogger<AccountController> _logger;
-    private readonly IAccountService _accountService;
-    private readonly ITokenService _tokenService;
-
-    public AccountController(ILogger<AccountController> logger, IAccountService accountService, ITokenService tokenService)
-    {
-        _logger = logger;
-        _accountService = accountService;
-        _tokenService = tokenService;
-    }
+    private readonly ILogger<AccountController> _logger = logger;
 
     [HttpGet("GetUser")]
     public async Task<IActionResult> GetUser()
@@ -30,7 +25,7 @@ public class AccountController : ControllerBase
         try
         {
             var username = User.GetUserName();
-            var user = await _accountService.GetUserByUserNameAsync(username);
+            var user = await accountService.GetUserByUserNameAsync(username);
             return user != null
                 ? Ok(user)
                 : NotFound("Usuário não encontrado!");
@@ -48,21 +43,21 @@ public class AccountController : ControllerBase
     {
         try
         {
-            var user = await _accountService.GetUserByUserNameAsync(userLoginDto.Username);
+            var user = await accountService.GetUserByUserNameAsync(userLoginDto.Username);
 
             if (user == null)
                 return Unauthorized("Usuário ou senha inválidos!");
 
-            var result = await _accountService.CheckUserPasswordAsync(user, userLoginDto.Password);
+            var result = await accountService.CheckUserPasswordAsync(user, userLoginDto.Password);
 
-            if (result != null && !result.Succeeded)
+            if (result is { Succeeded: false })
                 return Unauthorized("Usuário ou senha inválidos!");
 
             var userToReturn = new
             {
                 Username = user.Username,
                 PrimeiroNome = user.PrimeiroNome,
-                Token = await _tokenService.CreateToken(user)
+                Token = await tokenService.CreateToken(user)
             };
 
             return Ok(userToReturn);
@@ -80,10 +75,10 @@ public class AccountController : ControllerBase
     {
         try
         {
-            if (await _accountService.UserExists(userDto.Username))
+            if (await accountService.UserExists(userDto.Username))
                 return BadRequest("Usuário já cadastrado!");
 
-            var user = await _accountService.CreateAccountAsync(userDto);
+            var user = await accountService.CreateAccountAsync(userDto);
 
             return user != null
                 ? Ok(user)
@@ -101,12 +96,12 @@ public class AccountController : ControllerBase
     {
         try
         {
-            var user = await _accountService.GetUserByUserNameAsync(User.GetUserName());
+            var user = await accountService.GetUserByUserNameAsync(User.GetUserName());
 
             if (user == null)
                 return Unauthorized("Usuário inválido!");
 
-            var userReturn = await _accountService.UpdateAccountAsync(userUpdateDto);
+            var userReturn = await accountService.UpdateAccountAsync(userUpdateDto);
 
             return userReturn != null
                 ? Ok(userReturn)

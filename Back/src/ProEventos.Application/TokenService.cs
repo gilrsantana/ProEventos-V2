@@ -11,24 +11,18 @@ using ProEventos.Domain.Identity;
 
 namespace ProEventos.Application;
 
-public class TokenService : ITokenService
+public class TokenService(IConfiguration configuration, UserManager<User> userManager, IMapper mapper)
+    : ITokenService
 {
-    private readonly IMapper _mapper;
-    private readonly UserManager<User> _userManager;
-    private readonly IConfiguration _configuration;
-    private readonly SymmetricSecurityKey _key;
-
-    public TokenService(IConfiguration configuration, UserManager<User> userManager, IMapper mapper)
-    {
-        _configuration = configuration;
-        _userManager = userManager;
-        _mapper = mapper;
-        _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["TokenKey"] ?? throw new InvalidOperationException("TokenKey not found")));
-    }
+    private readonly SymmetricSecurityKey _key = new(
+        Encoding
+            .UTF8
+            .GetBytes(configuration["TokenKey"] 
+                      ?? throw new InvalidOperationException("TokenKey not found")));
 
     public async Task<string> CreateToken(UserUpdateDto userUpdateDto)
     {
-        var user = _mapper.Map<User>(userUpdateDto);
+        var user = mapper.Map<User>(userUpdateDto);
 
         var claims = new List<Claim>
         {
@@ -36,7 +30,7 @@ public class TokenService : ITokenService
             new Claim(ClaimTypes.Name, user.UserName ?? string.Empty),
         };
 
-        var roles = await _userManager.GetRolesAsync(user);
+        var roles = await userManager.GetRolesAsync(user);
 
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 

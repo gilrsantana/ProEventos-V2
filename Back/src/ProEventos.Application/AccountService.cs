@@ -8,31 +8,22 @@ using ProEventos.Persistence.Interfaces;
 
 namespace ProEventos.Application;
 
-public class AccountService : IAccountService
+public class AccountService(
+    UserManager<User> userManager,
+    SignInManager<User> signInManager,
+    IMapper mapper,
+    IUserPersist userPersist)
+    : IAccountService
 {
-    private readonly IMapper _mapper;
-    private readonly SignInManager<User> _signInManager;
-    private readonly UserManager<User> _userManager;
-    private readonly IUserPersist _userPersist;
-    public AccountService(UserManager<User> userManager, 
-                          SignInManager<User> signInManager, 
-                          IMapper mapper, 
-                          IUserPersist userPersist)
-    {
-            _userPersist = userPersist;
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _mapper = mapper;
-        
-    }
-
     public async Task<SignInResult?> CheckUserPasswordAsync(UserUpdateDto userUpdateDto, string password)
     {
         try
         {
-            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.UserName == userUpdateDto.Username.ToLower());
+            var user = await userManager
+                .Users
+                .SingleOrDefaultAsync(u => u.UserName == userUpdateDto.Username.ToLower());
             if (user == null) return null;
-            return await _signInManager.CheckPasswordSignInAsync(user, password, false);
+            return await signInManager.CheckPasswordSignInAsync(user, password, false);
         }
         catch (Exception ex)
         {
@@ -44,11 +35,11 @@ public class AccountService : IAccountService
     {
         try
         {
-            var user = _mapper.Map<User>(userDto);
-            var result = await _userManager.CreateAsync(user, userDto.Password);
+            var user = mapper.Map<User>(userDto);
+            var result = await userManager.CreateAsync(user, userDto.Password);
             if (result.Succeeded)
             {
-                var userToReturn = _mapper.Map<UserDto>(user);
+                var userToReturn = mapper.Map<UserDto>(user);
                 return userToReturn;
             }
             return null;
@@ -59,17 +50,16 @@ public class AccountService : IAccountService
         }
     }
 
-    public async Task<UserUpdateDto?> GetUserByUserNameAsync(string username)
+    public async Task<UserUpdateDto?> GetUserByUserNameAsync(string? username)
     {
         try
         {
-            var user = await _userPersist.GetUserByUserNameAsync(username);
-            if (user == null) return null;
-            return _mapper.Map<UserUpdateDto>(user);
+            var user = await userPersist.GetUserByUserNameAsync(username);
+            return user == null ? null : mapper.Map<UserUpdateDto>(user);
         }
         catch (Exception ex)
         {
-            throw new Exception($"Erro ao pegar usuário pelo nome. Erro: {ex.Message}");
+            throw new Exception($"Erro ao buscar usuário pelo nome. Erro: {ex.Message}");
         }
     }
 
@@ -77,19 +67,19 @@ public class AccountService : IAccountService
     {
         try
         {
-            var user = await _userPersist.GetUserByUserNameAsync(userUpdateDto.Username);
+            var user = await userPersist.GetUserByUserNameAsync(userUpdateDto.Username);
             if (user == null) return null;
-            _mapper.Map(userUpdateDto, user);
+            mapper.Map(userUpdateDto, user);
 
-            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var result = await _userManager.ResetPasswordAsync(user, token, userUpdateDto.Password);
+            var token = await userManager.GeneratePasswordResetTokenAsync(user);
+            var result = await userManager.ResetPasswordAsync(user, token, userUpdateDto.Password);
 
-            _userPersist.Update(user);
-            if (await _userPersist.SaveChangesAsync())
+            userPersist.Update(user);
+            if (await userPersist.SaveChangesAsync())
             {
                 if (user.UserName == null) return null;
-                var userToReturn = await _userPersist.GetUserByUserNameAsync(user.UserName);
-                return _mapper.Map<UserUpdateDto>(userToReturn);
+                var userToReturn = await userPersist.GetUserByUserNameAsync(user.UserName);
+                return mapper.Map<UserUpdateDto>(userToReturn);
             }
             return null;
         }
@@ -103,7 +93,9 @@ public class AccountService : IAccountService
     {
         try
         {
-            return await _userManager.Users.AnyAsync(u => u.UserName == username.ToLower());
+            return await userManager
+                .Users
+                .AnyAsync(u => u.UserName == username.ToLower());
         }
         catch (Exception ex)
         {
