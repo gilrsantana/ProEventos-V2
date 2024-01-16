@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ProEventos.API.Helpers;
 using ProEventos.Application;
 using ProEventos.Application.Interfaces;
 using ProEventos.Domain.Identity;
@@ -57,6 +58,8 @@ builder.Services.AddControllers()
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+builder.Services.AddScoped<IUtil, Util>();
+
 builder.Services.AddScoped<IEventoService, EventoService>();
 builder.Services.AddScoped<IPalestranteService, PalestranteService>();
 builder.Services.AddScoped<ILoteService, LoteService>();
@@ -76,7 +79,23 @@ builder.Services.AddCors();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    options.SwaggerDoc("v1", new() { Title = "ProEventos.API", Version = "v1" });
+    options.SwaggerDoc("v1", new()
+    {
+        Title = "ProEventos.API", 
+        Version = "v1" ,
+        TermsOfService = new Uri("https://example.com/terms"),
+        Contact = new OpenApiContact
+        {
+            Name = "Gilmar Santana",
+            Email = "gilmar@email.com",
+            Url = new Uri("https://gilmarsantana.com")
+        },
+        License = new OpenApiLicense
+        {
+            Name = "Use under MIT",
+            Url = new Uri("https://mit-license.org/#:~:text=The%20MIT%20License%20is%20a%20permissive%20free%20software,reuse%20and%20has%2C%20therefore%2C%20an%20excellent%20license%20compatibility."),
+        }
+    });
     
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -85,7 +104,7 @@ builder.Services.AddSwaggerGen(options =>
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.Http,
-        Description = "Acesso protegido utilizando o accessToken obtido em \"api/Account/login\""
+        Description = "JWT Authorization header usando Bearer gerado no endpoint Account/Login. <br>Entre com 'Bearer ' [espaço] então coloque seu token. <br>Exemplo: 'Bearer 12345abcdef'"
     });
     
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -97,7 +116,10 @@ builder.Services.AddSwaggerGen(options =>
                 {
                     Type = ReferenceType.SecurityScheme,
                     Id = "Bearer"
-                }
+                },
+                Scheme = "oauth2",
+                Name = "Bearer",
+                In = ParameterLocation.Header
             },
             new string[] { }
         }

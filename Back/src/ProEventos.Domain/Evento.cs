@@ -15,7 +15,7 @@ public class Evento
     public string Telefone { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public int UserId { get; set; }
-    public User User { get; set; }
+    public User? User { get; set; }
     public IEnumerable<Lote>? Lotes { get; set; }
     public IEnumerable<RedeSocial>? RedesSociais { get; set; }
     public IEnumerable<PalestranteEvento>? PalestrantesEventos { get; set; }
