@@ -1,7 +1,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
@@ -30,7 +30,11 @@ import { PalestrantesComponent } from './components/palestrantes/palestrantes.co
 import { PerfilComponent } from './components/user/perfil/perfil.component';
 import { NavComponent } from './shared/nav/nav.component';
 
+import {AccountService} from "@app/services/account.service";
 import { EventoService } from './services/evento.service';
+import { LoteService } from './services/lote.service';
+
+import {JwtInterceptor} from "@app/interceptors/jwt.interceptor";
 
 import { DateTimeFormatPipe } from './helpers/date-time-format.pipe';
 import { TituloComponent } from './shared/titulo/titulo.component';
@@ -39,7 +43,6 @@ import { EventoListaComponent } from './components/eventos/evento-lista/evento-l
 import { UserComponent } from './components/user/user.component';
 import { LoginComponent } from './components/user/login/login.component';
 import { RegistrationComponent } from './components/user/registration/registration.component';
-import { LoteService } from './services/lote.service';
 import { DateTimePipeBrPipe } from './helpers/date-time-pipe-br.pipe';
 import { DatePipeBrPipe } from './helpers/date-pipe-br.pipe';
 
@@ -47,7 +50,7 @@ defineLocale('pt-br', ptBrLocale);
 registerLocaleData(localePt);
 
 @NgModule({
-  declarations: [	
+  declarations: [
     AppComponent,
     EventosComponent,
     PalestrantesComponent,
@@ -98,11 +101,13 @@ registerLocaleData(localePt);
   * A linha abaixo é a forma 3
   */
  providers: [
-  EventoService,
-  LoteService,
-  provideNgxMask(),
-  { provide: LOCALE_ID, useValue: 'pt-BR' }
-],
+   EventoService,
+   LoteService,
+   AccountService,
+   provideNgxMask(),
+   { provide: LOCALE_ID, useValue: 'pt-BR' },
+   { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}
+ ],
  bootstrap: [AppComponent],
  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
