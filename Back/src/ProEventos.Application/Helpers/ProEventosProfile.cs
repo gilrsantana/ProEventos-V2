@@ -17,5 +17,6 @@ public class ProEventosProfile : Profile
         CreateMap<User, UserDto>().ReverseMap();
         CreateMap<User, UserUpdateDto>().ReverseMap();
         CreateMap<User, UserLoginDto>().ReverseMap();
+        CreateMap<User, UserCreatedDto>().ReverseMap();
     }
 }

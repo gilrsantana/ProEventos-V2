@@ -12,7 +12,8 @@ public class AccountService(
     UserManager<User> userManager,
     SignInManager<User> signInManager,
     IMapper mapper,
-    IUserPersist userPersist)
+    IUserPersist userPersist,
+    ITokenService tokenService)
     : IAccountService
 {
     public async Task<SignInResult?> CheckUserPasswordAsync(UserUpdateDto userUpdateDto, string password)
@@ -31,18 +32,27 @@ public class AccountService(
         }
     }
 
-    public async Task<UserDto?> CreateAccountAsync(UserDto userDto)
+    public async Task<UserCreatedDto?> CreateAccountAsync(UserDto userDto)
     {
         try
         {
             var user = mapper.Map<User>(userDto);
             var result = await userManager.CreateAsync(user, userDto.Password);
-            if (result.Succeeded)
-            {
-                var userToReturn = mapper.Map<UserDto>(user);
-                return userToReturn;
-            }
-            return null;
+            if (!result.Succeeded) return null;
+            
+            var userCreated = await userManager.FindByNameAsync(user.UserName);
+            if (userCreated == null) return null;
+            var userToReturn = mapper.Map<UserCreatedDto>(userCreated);
+            userToReturn.PrimeiroNome = userCreated.PrimeiroNome;   
+            userToReturn.UltimoNome = userCreated.UltimoNome;
+            userToReturn.Token = await tokenService.CreateToken(
+                new UserUpdateDto
+                {
+                    Id = userCreated.Id, 
+                    Username = userCreated.UserName
+                });
+            
+            return userToReturn;
         }
         catch (Exception ex)
         {

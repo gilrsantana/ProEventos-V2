@@ -46,15 +46,17 @@ public class EventoService : IEventoService
         {
             var evento = await _eventoPersist.GetEventoByIdAsync(userId, eventoId);
             if (evento is null) return null;
-
-            var eventoAtualizado = _mapper.Map<Evento>(model);
-            eventoAtualizado.Id = evento.Id;
+            
+            model.Id = evento.Id;
             model.UserId = userId;
-            _geralPersist.Update(eventoAtualizado);
+
+            _mapper.Map(model, evento);
+            
+            _geralPersist.Update<Evento>(evento);
 
             if (await _geralPersist.SaveChangesAsync())
             {
-                var eventoRetorno = await _eventoPersist.GetEventoByIdAsync(userId, eventoAtualizado.Id);
+                var eventoRetorno = await _eventoPersist.GetEventoByIdAsync(userId, evento.Id);
                 return _mapper.Map<EventoDto>(eventoRetorno);
             }
 

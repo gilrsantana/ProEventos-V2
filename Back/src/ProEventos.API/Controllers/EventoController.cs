@@ -108,7 +108,7 @@ public class EventoController(IEventoService eventoService, IUtil util)
         }
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("Put/{id}")]
     public async Task<IActionResult> Put(int id, EventoDto model)
     {
         try
