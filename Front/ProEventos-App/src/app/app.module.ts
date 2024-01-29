@@ -45,6 +45,7 @@ import { LoginComponent } from './components/user/login/login.component';
 import { RegistrationComponent } from './components/user/registration/registration.component';
 import { DateTimePipeBrPipe } from './helpers/date-time-pipe-br.pipe';
 import { DatePipeBrPipe } from './helpers/date-pipe-br.pipe';
+import { HomeComponent } from './components/home/home.component';
 
 defineLocale('pt-br', ptBrLocale);
 registerLocaleData(localePt);
@@ -52,19 +53,20 @@ registerLocaleData(localePt);
 @NgModule({
   declarations: [
     AppComponent,
-    EventosComponent,
-    PalestrantesComponent,
-    NavComponent,
-    DateTimeFormatPipe,
-    TituloComponent,
-    ContatosComponent,
+    HomeComponent,
     DashboardComponent,
-    PerfilComponent,
-    EventoDetalheComponent,
-    EventoListaComponent,
     UserComponent,
+    PerfilComponent,
     LoginComponent,
     RegistrationComponent,
+    ContatosComponent,
+    EventosComponent,
+    EventoListaComponent,
+    EventoDetalheComponent,
+    PalestrantesComponent,
+    NavComponent,
+    TituloComponent,
+    DateTimeFormatPipe,
     DateTimePipeBrPipe,
     DatePipeBrPipe,
    ],

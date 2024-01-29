@@ -8,20 +8,10 @@ import {AccountService} from "@app/services/account.service";
   styleUrls: ['./nav.component.scss']
 })
 
-
-export class NavComponent implements OnInit {
+export class NavComponent {
   isCollapsed = true;
-
   constructor(public accountService: AccountService,
-              private router: Router) {
-    // Empty constructor because we don't need to do anything here
-    // If we don't include this, TypeScript will automatically generate an empty constructor for us
-    // This is just to make it clear that we don't need to do anything in the constructor
-  }
-
-  ngOnInit(): void {
-    console.log('NavComponent initialized');
-  }
+              private router: Router) {  }
 
   get isLoggedIn(): boolean {
     return this.accountService.isLoggedIn();

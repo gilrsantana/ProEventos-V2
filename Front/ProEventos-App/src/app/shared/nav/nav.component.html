@@ -27,13 +27,13 @@
         </li>
         </ng-container>
       </ul>
-      <div *ngIf="!(accountService.isLoggedIn())" class="navbar-nav me-3 d-xs-none d-none d-md-block">
+      <div *ngIf="(!accountService.isLoggedIn())" class="navbar-nav me-3 d-xs-none d-none d-md-block">
         <a class="btn btn-light me-3 border" routerLink="/user/login" >Entrar</a>
         <a class="btn btn-warning" routerLink="/user/cadastro">Me Cadastrar</a>
       </div>
 
       <ul *ngIf="(accountService.isLoggedIn())" class="navbar-nav">
-        <li class="nav-item dropdown" dropdown>
+        <li class="nav-item dropdown" dropdown >
           <a dropdownToggle
             class="nav-link dropdown-toggle"
             style="cursor: pointer;"

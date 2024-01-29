@@ -39,8 +39,10 @@ public class TokenService(IConfiguration configuration, UserManager<User> userMa
         var tokenDescription = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddDays(1),
-            SigningCredentials = creds
+            Expires = DateTime.UtcNow.AddMinutes(2),
+            SigningCredentials = creds,
+            Issuer = configuration["IssuerKey"],
+            
         };
 
         var tokenHandler = new JwtSecurityTokenHandler();

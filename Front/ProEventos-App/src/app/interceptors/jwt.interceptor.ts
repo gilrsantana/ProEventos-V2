@@ -5,9 +5,9 @@ import {
   HttpEvent,
   HttpInterceptor
 } from '@angular/common/http';
-import {Observable, take} from 'rxjs';
+import {Observable} from 'rxjs';
 import {AccountService} from "@app/services/account.service";
-import {User} from "@app/models/Identity/user";
+
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
@@ -15,17 +15,16 @@ export class JwtInterceptor implements HttpInterceptor {
   constructor(private accountService: AccountService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    let currentUser:  User|null;
-    this.accountService
-      .currentUser$
-      .pipe(take(1))
-      .subscribe(user => {
-        currentUser = user
-        if(currentUser) {
-          request = request
-            .clone({ setHeaders: { Authorization: `Bearer ${currentUser.token}` } });
-        }
-      });
+    const currentUser = this.accountService.getCurrentUser();
+
+    if(currentUser) {
+      if(this.accountService.isTokenExpired()) {
+
+      }
+
+      request = request
+        .clone({ setHeaders: { Authorization: `Bearer ${currentUser.token}` } });
+    }
 
     return next.handle(request);
   }
