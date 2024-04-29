@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, take } from 'rxjs';
 import { Evento } from '../models/Evento';
+import { environment } from '@environments/environment';
 
 @Injectable(
   /*
@@ -15,8 +16,7 @@ import { Evento } from '../models/Evento';
   */
 )
 export class EventoService {
-  baseURL = 'http://127.0.0.1:5207/Evento'
-
+  baseURL = `${environment.apiUrl}Evento`;
   constructor(private http: HttpClient) { }
 
   getEventos(): Observable<Evento[]> {
@@ -36,7 +36,7 @@ export class EventoService {
       .get<Evento>(`${this.baseURL}/GetById/${id}`)
       .pipe(take(1));
   }
-  
+
   post(evento: Evento): Observable<Evento> {
     return this.http
       .post<Evento>(`${this.baseURL}/Post`, evento)

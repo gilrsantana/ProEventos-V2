@@ -1,26 +1,26 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProEventos.API.Extensions;
+using ProEventos.API.Helpers;
 using ProEventos.Application.Dtos;
 using ProEventos.Application.Interfaces;
 
 namespace ProEventos.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
-public class EventoController : ControllerBase
+public class EventoController(IEventoService eventoService, IUtil util)
+    : ControllerBase
 {
-    private readonly IEventoService _eventoService;
-
-    public EventoController(IEventoService eventoService)
-    {
-        _eventoService = eventoService;
-    }
-
+    private readonly string _destino = "Images";
+    
     [HttpGet("Get")]
     public async Task<IActionResult> Get(bool incluirPalestrantes = false)
     {
         try
         {
-            var eventos = await _eventoService.GetAllEventosAsync(incluirPalestrantes);
+            var eventos = await eventoService.GetAllEventosAsync(User.GetUserId(),incluirPalestrantes);
             if (eventos.Length == 0) return NoContent();
 
             return Ok(eventos);
@@ -37,7 +37,7 @@ public class EventoController : ControllerBase
     {
         try
         {
-            var evento = await _eventoService.GetEventoByIdAsync(id, incluirPalestrantes);
+            var evento = await eventoService.GetEventoByIdAsync(User.GetUserId(), id, incluirPalestrantes);
             if (evento == null) return NoContent();
             
             return Ok(evento);
@@ -54,7 +54,7 @@ public class EventoController : ControllerBase
     {
         try
         {
-            var eventos = await _eventoService.GetAllEventosByTemaAsync(tema, incluirPalestrantes);
+            var eventos = await eventoService.GetAllEventosByTemaAsync(User.GetUserId(), tema, incluirPalestrantes);
             if (eventos.Length == 0) return NoContent();
             
             return Ok(eventos);
@@ -65,13 +65,38 @@ public class EventoController : ControllerBase
                 $"Erro ao tentar recuperar evento por tema. Erro: {e.Message}");
         }
     }
-
+    
+    [HttpPost("upload-image/{eventoId}")]
+    public async Task<IActionResult> UploadImage(int eventoId)
+    {
+        try
+        {
+            var evento = await eventoService.GetEventoByIdAsync(User.GetUserId(), eventoId);
+            if (evento == null) return NoContent();
+            
+            var file = Request.Form.Files[0];
+            if (file.Length > 0)
+            {
+                util.DeleteImage(evento.ImagemURL, _destino);
+                evento.ImagemURL = await util.SaveImage(file, _destino);
+            }
+            var eventoRetorno = await eventoService.UpdateEvento( User.GetUserId(),eventoId, evento);
+            return Ok(eventoRetorno);
+            
+        }
+        catch (Exception e)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                $"Erro ao tentar adicionar imagem. Erro: {e.Message}");
+        }
+    }
+    
     [HttpPost("Post")]
     public async Task<IActionResult> Post(EventoDto model)
     {
         try
         {
-            var evento = await _eventoService.AddEvento(model);
+            var evento = await eventoService.AddEvento(User.GetUserId(), model);
             return evento == null 
                 ? BadRequest("Erro ao tentar adicionar evento.") 
                 : StatusCode(StatusCodes.Status201Created, evento);
@@ -88,7 +113,7 @@ public class EventoController : ControllerBase
     {
         try
         {
-            var evento = await _eventoService.UpdateEvento(id, model);
+            var evento = await eventoService.UpdateEvento(User.GetUserId(), id, model);
             return evento == null 
                 ? BadRequest("Erro ao tentar atualizar evento.") 
                 : StatusCode(StatusCodes.Status200OK, evento);
@@ -105,10 +130,10 @@ public class EventoController : ControllerBase
     {
         try
         {
-            var evento = await _eventoService.GetEventoByIdAsync(id);
+            var evento = await eventoService.GetEventoByIdAsync(User.GetUserId(), id);
             if (evento == null) return NoContent();
             
-            var result = await _eventoService.DeleteEvento(id);
+            var result = await eventoService.DeleteEvento(User.GetUserId(), id);
             return result == false 
                 ? BadRequest("Erro ao tentar remover evento.") 
                 : StatusCode(StatusCodes.Status200OK, result);

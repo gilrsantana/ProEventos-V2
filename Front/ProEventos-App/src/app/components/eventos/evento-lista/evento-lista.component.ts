@@ -1,10 +1,11 @@
-import { Component, TemplateRef } from '@angular/core';
+import {Component, OnInit, TemplateRef} from '@angular/core';
 import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { Evento } from '@app/models/Evento';
 import { EventoService } from '@app/services/evento.service';
+import {HttpErrorResponse, HttpHeaders} from "@angular/common/http";
 
 @Component({
   selector: 'app-evento-lista',
@@ -20,7 +21,7 @@ import { EventoService } from '@app/services/evento.service';
   * providers: [EventoService],
   */
 })
-export class EventoListaComponent {
+export class EventoListaComponent implements OnInit{
   public eventos: Evento[] = [];
   public eventosFiltrados: Evento[] = [];
   public widthImg = 80;
@@ -39,7 +40,7 @@ export class EventoListaComponent {
     private router: Router
   ) {}
 
-  // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
+
   ngOnInit(): void {
     this.spinner.show();
     this.getEventos();
@@ -51,10 +52,10 @@ export class EventoListaComponent {
         this.eventos = _eventos;
         this.eventosFiltrados = this.eventos;
       },
-      error: (error: Error) => {
+      error: (e: HttpErrorResponse) => {
+        console.error('meu erro: ' + JSON.stringify(e));
         this.spinner.hide();
-        console.error(error);
-        this.toastr.error('Erro ao carregar os eventos.',  'Erro!');
+        this.toastr.error('Erro ao carregar os eventos', 'Erro!');
       },
       complete: () => {
         this.spinner.hide();

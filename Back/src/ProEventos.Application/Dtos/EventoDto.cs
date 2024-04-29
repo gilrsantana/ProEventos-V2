@@ -17,8 +17,7 @@ public class EventoDto
      Range(1, 120000, ErrorMessage = "{0} deve ser entre 1 e 120.000.")]
     public int QtdPessoas { get; set; }
 
-    [RegularExpression(@".*\.(gif|jpe?g|bmp|png)$", ErrorMessage = "Não é uma imagem válida. (gif, jpg, jpeg, bmp ou png)"),
-     Required(ErrorMessage = "{0} é obrigatório.")]
+    [RegularExpression(@".*\.(gif|jpe?g|bmp|png)$", ErrorMessage = "Não é uma imagem válida. (gif, jpg, jpeg, bmp ou png)")]
     public string ImagemURL { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "{0} é obrigatório."),
@@ -29,6 +28,9 @@ public class EventoDto
      Display(Name = "e-mail"),
      EmailAddress(ErrorMessage = "O campo {0} está em formato inválido.")]
     public string Email { get; set; } = string.Empty;
+    
+    public int UserId { get; set; }
+    public UserDto? UserDto { get; set; }
     public IEnumerable<LoteDto> Lotes { get; set; } = new List<LoteDto>();
     public IEnumerable<RedeSocialDto> RedesSociais { get; set; } = new List<RedeSocialDto>();
     public IEnumerable<PalestranteDto> Palestrantes { get; set; } = new List<PalestranteDto>();

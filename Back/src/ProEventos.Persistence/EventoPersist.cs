@@ -14,7 +14,7 @@ public class EventoPersist : IEventoPersist
         _context = context;
     }
     
-    public async Task<Evento[]> GetAllEventosAsync(bool incluirPalestrantes = false)
+    public async Task<Evento[]> GetAllEventosAsync(int userId, bool incluirPalestrantes = false)
     {
         IQueryable<Evento> query = _context.Eventos.AsNoTracking()
             .Include(e => e.Lotes)
@@ -26,13 +26,15 @@ public class EventoPersist : IEventoPersist
                 .Include(e => e.PalestrantesEventos)!
                 .ThenInclude(pe => pe.Palestrante);
         }
-        
-        query = query.OrderBy(e => e.Id);
+
+        query = query
+            .Where(e => e.UserId == userId)
+            .OrderBy(e => e.Id);
         
         return await query.ToArrayAsync();
     }
 
-    public async Task<Evento[]> GetAllEventosByTemaAsync(string tema, bool incluirPalestrantes = false)
+    public async Task<Evento[]> GetAllEventosByTemaAsync(int userId, string tema, bool incluirPalestrantes = false)
     {
         IQueryable<Evento> query = _context.Eventos.AsNoTracking()
             .Include(e => e.Lotes)
@@ -46,13 +48,14 @@ public class EventoPersist : IEventoPersist
         }
         
         query = query
-            .Where(e => e.Tema.ToLower().Contains(tema.ToLower()))
+            .Where(e => e.Tema.ToLower().Contains(tema.ToLower()) 
+                        && e.UserId == userId)
             .OrderBy(e => e.Id);
         
         return await query.ToArrayAsync();
     }
     
-    public async Task<Evento?> GetEventoByIdAsync(int idEvento, bool incluirPalestrantes = false)
+    public async Task<Evento?> GetEventoByIdAsync(int userId, int idEvento, bool incluirPalestrantes = false)
     {
         IQueryable<Evento> query = _context.Eventos.AsNoTracking()
             .Include(e => e.Lotes)
@@ -66,7 +69,7 @@ public class EventoPersist : IEventoPersist
         }
         
         query = query
-            .Where(e => e.Id == idEvento)
+            .Where(e => e.Id == idEvento && e.UserId == userId)
             .OrderBy(e => e.Id);
         
         return await query.FirstOrDefaultAsync();
