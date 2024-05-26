@@ -1,13 +1,11 @@
 ﻿services:
   proeventos.api:
-    container_name: proeventos-api
-    build:
-      context: .
-      dockerfile: ProEventos.API/Dockerfile
+    image: gilrsantana/proeventos_api
+    container_name: ${DOCKER_REGISTRY-}proeventos-api
     ports: 
-      - "4652:8080"
+      - "5672:8080"
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
+      - ASPNETCORE_ENVIRONMENT=Development
     networks:
       - proeventos-network      
     depends_on:
@@ -16,15 +14,17 @@
   proeventos.db:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: proeventos-mssql
+    ports:
+      - "1450:1433"
     environment:
-      ACCEPT_EULA: "1"
-      MSSQL_SA_PASSWORD: "Numsey#2022"
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Numsey#2022
     volumes:
       - proeventos-db:/var/opt/mssql
     networks:
       proeventos-network:
         aliases:
-          - mssql-db 
+          - mssql 
 
 volumes:
   proeventos-db:

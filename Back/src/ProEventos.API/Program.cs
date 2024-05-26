@@ -105,7 +105,7 @@ builder.Services.AddSwaggerGen(options =>
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.Http,
-        Description = "JWT Authorization header usando Bearer gerado no endpoint Account/Login. <br>Entre com 'Bearer ' [espaço] então coloque seu token. <br>Exemplo: 'Bearer 12345abcdef'"
+        Description = "JWT Authorization header usando Bearer gerado no endpoint Account/Login. <br>Entre com seu token. <br>Exemplo: 12345abcdef"
     });
     
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -132,18 +132,17 @@ builder.Services.AddSwaggerGen(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (builder.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
 app.MapControllers();
 
@@ -151,11 +150,9 @@ var cultureInfo = new CultureInfo("pt-BR");
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
-// Executando Migrations
-{
-    var scope = app.Services.CreateScope();
-    var dbContext = scope.ServiceProvider.GetRequiredService<ProEventosContext>();
+var scope = app.Services.CreateScope();
+var dbContext = scope.ServiceProvider.GetRequiredService<ProEventosContext>();
+if (!dbContext.AllMigrationsApplied())
     dbContext.Database.Migrate();
-}
 
 app.Run();

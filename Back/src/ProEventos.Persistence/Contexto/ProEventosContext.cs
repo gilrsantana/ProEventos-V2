@@ -29,26 +29,62 @@ public class ProEventosContext : IdentityDbContext<
 
             userRole.HasOne(ur => ur.Role)
                 .WithMany(r => r.UserRoles)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasForeignKey(ur => ur.RoleId)
                 .IsRequired();
 
             userRole.HasOne(ur => ur.User)
                 .WithMany(r => r.UserRoles)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasForeignKey(ur => ur.UserId)
                 .IsRequired();
         });
 
-        modelBuilder.Entity<PalestranteEvento>()
-            .HasKey(pe => new { pe.EventoId, pe.PalestranteId });
+        modelBuilder.Entity<PalestranteEvento>(pe =>
+        {
+            pe.HasKey(pk => new { pk.EventoId, pk.PalestranteId });
+            
+            pe.HasOne(p => p.Palestrante)
+                .WithMany(p => p.PalestrantesEventos)
+                .OnDelete(DeleteBehavior.NoAction)
+                .HasForeignKey(p => p.PalestranteId)
+                .IsRequired();
+            
+            pe.HasOne(e => e.Evento)
+                .WithMany(e => e.PalestrantesEventos)
+                .OnDelete(DeleteBehavior.NoAction)
+                .HasForeignKey(e => e.EventoId)
+                .IsRequired();
+        });
+
+        modelBuilder.Entity<Evento>(evento =>
+        {
+            evento.HasMany(e => e.RedesSociais)
+                .WithOne(rs => rs.Evento)
+                .OnDelete(DeleteBehavior.NoAction);
+            
+            evento.HasMany(pe => pe.PalestrantesEventos)
+                .WithOne(p => p.Evento)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
         
-        modelBuilder.Entity<Evento>()
-            .HasMany(e => e.RedesSociais)
-            .WithOne(rs => rs.Evento)
-            .OnDelete(DeleteBehavior.Cascade);
-        
-        modelBuilder.Entity<Palestrante>()
-            .HasMany(p => p.RedesSociais)
+        modelBuilder.Entity<Palestrante>(palestrante => 
+        {
+            palestrante.HasMany(p => p.RedesSociais)
             .WithOne(rs => rs.Palestrante)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.NoAction);
+        });
+
+        modelBuilder.Entity<Lote>(lote =>
+        {
+            lote.HasKey(l => l.Id);
+            
+            lote.Property(l => l.Preco).HasColumnType("DECIMAL(18,2)");
+            
+            lote.HasOne(l => l.Evento)
+                .WithMany(e => e.Lotes)
+                .OnDelete(DeleteBehavior.Cascade);
+
+        });
     }
 }
