@@ -4,7 +4,7 @@
 - Eventualmente, algumas definições e instalações devem se adequar ao ambiente de SO diferente.
 - Este documento contém informações gerais de configuração e clone para o projeto
 
-## 1 - Configuração e instalações iniciais iniciais
+## 1 - Configuração e instalações iniciais
 
 <br>
 
