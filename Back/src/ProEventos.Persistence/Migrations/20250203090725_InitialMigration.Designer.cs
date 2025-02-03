@@ -12,24 +12,15 @@ using ProEventos.Persistence.Contexto;
 namespace ProEventos.Persistence.Migrations
 {
     [DbContext(typeof(ProEventosContext))]
-<<<<<<<< HEAD:Back/src/ProEventos.Persistence/Migrations/20250203084901_InitialMigration.Designer.cs
-    [Migration("20250203084901_InitialMigration")]
+    [Migration("20250203090725_InitialMigration")]
     partial class InitialMigration
-========
-    [Migration("20240526083006_update")]
-    partial class update
->>>>>>>> 13c90fa7f74f8adc5d76300bc6cc5655cac72837:Back/src/ProEventos.Persistence/Migrations/20240526083006_update.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-<<<<<<<< HEAD:Back/src/ProEventos.Persistence/Migrations/20250203084901_InitialMigration.Designer.cs
                 .HasAnnotation("ProductVersion", "9.0.1")
-========
-                .HasAnnotation("ProductVersion", "8.0.4")
->>>>>>>> 13c90fa7f74f8adc5d76300bc6cc5655cac72837:Back/src/ProEventos.Persistence/Migrations/20240526083006_update.Designer.cs
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
