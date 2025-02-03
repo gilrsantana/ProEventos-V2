@@ -38,17 +38,34 @@ public class ProEventosContext : IdentityDbContext<
                 .IsRequired();
         });
 
-        modelBuilder.Entity<PalestranteEvento>()
-            .HasKey(pe => new { pe.EventoId, pe.PalestranteId });
-        
-        modelBuilder.Entity<Evento>()
-            .HasMany(e => e.RedesSociais)
-            .WithOne(rs => rs.Evento)
-            .OnDelete(DeleteBehavior.Cascade);
-        
         modelBuilder.Entity<Palestrante>()
             .HasMany(p => p.RedesSociais)
             .WithOne(rs => rs.Palestrante)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<PalestranteEvento>()
+        .HasKey(pe => new { pe.EventoId, pe.PalestranteId });
+
+        modelBuilder.Entity<PalestranteEvento>()
+            .HasOne(pe => pe.Evento)
+            .WithMany(e => e.PalestrantesEventos)
+            .HasForeignKey(pe => pe.EventoId)
+            .OnDelete(DeleteBehavior.NoAction); 
+
+        modelBuilder.Entity<PalestranteEvento>()
+            .HasOne(pe => pe.Palestrante)
+            .WithMany(p => p.PalestrantesEventos)
+            .HasForeignKey(pe => pe.PalestranteId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Evento>()
+            .HasMany(e => e.RedesSociais)
+            .WithOne(rs => rs.Evento)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Palestrante>()
+            .HasMany(p => p.RedesSociais)
+            .WithOne(rs => rs.Palestrante)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

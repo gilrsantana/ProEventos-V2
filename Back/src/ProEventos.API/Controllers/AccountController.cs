@@ -1,10 +1,8 @@
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProEventos.API.Extensions;
 using ProEventos.Application.Dtos;
 using ProEventos.Application.Interfaces;
-using ProEventos.Domain.Identity;
 
 namespace ProEventos.API.Controllers;
 

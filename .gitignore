@@ -490,3 +490,5 @@ Back/src/ProEventos.Persistence/Data/ProEventos.db-wal
 Back/src/ProEventos.Persistence/Data/ProEventos.db-shm
 Back/src/.vscode/launch.json
 Back/src/.vscode/tasks.json
+/Back/src/ProEventos.API/appsettings.Development.json
+/Back/src/ProEventos.API/appsettings.json

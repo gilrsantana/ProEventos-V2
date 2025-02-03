@@ -19,7 +19,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<ProEventosContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
 builder.Services.AddIdentityCore<User>(options => 
@@ -104,7 +104,8 @@ builder.Services.AddSwaggerGen(options =>
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.Http,
-        Description = "JWT Authorization header usando Bearer gerado no endpoint Account/Login. <br>Entre com 'Bearer ' [espaço] então coloque seu token. <br>Exemplo: 'Bearer 12345abcdef'"
+        Description = "JWT Authorization header usando Bearer gerado no endpoint Account/Login. <br>Entre com seu token. /r/n " +
+        "Exemplo: '12345abcdef'"
     });
     
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -129,11 +130,11 @@ builder.Services.AddSwaggerGen(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+//if (app.Environment.IsDevelopment())
+//{
+//}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 

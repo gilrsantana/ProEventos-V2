@@ -17,8 +17,8 @@ public class TokenService(IConfiguration configuration, UserManager<User> userMa
     private readonly SymmetricSecurityKey _key = new(
         Encoding
             .UTF8
-            .GetBytes(configuration["TokenKey"] 
-                      ?? throw new InvalidOperationException("TokenKey not found")));
+            .GetBytes(configuration["TokenKey"]
+                            ?? throw new InvalidOperationException("TokenKey not found")));
 
     public async Task<string> CreateToken(UserUpdateDto userUpdateDto)
     {
@@ -33,7 +33,7 @@ public class TokenService(IConfiguration configuration, UserManager<User> userMa
         var roles = await userManager.GetRolesAsync(user);
 
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
-
+        
         var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
         var tokenDescription = new SecurityTokenDescriptor
