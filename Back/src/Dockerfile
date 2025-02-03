@@ -29,3 +29,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "ProEventos.API.dll"]
+# docker run -v "C:\Configuracoes:/app/dados" --name ProEventosApi-1.02 -p 8080:8080 -p 8081:8081 gilrsantana/proeventosapi:v1.02
