@@ -12,24 +12,15 @@ using ProEventos.Persistence.Contexto;
 namespace ProEventos.Persistence.Migrations
 {
     [DbContext(typeof(ProEventosContext))]
-<<<<<<<< HEAD:Back/src/ProEventos.Persistence/Migrations/20250203084901_InitialMigration.Designer.cs
-    [Migration("20250203084901_InitialMigration")]
-    partial class InitialMigration
-========
-    [Migration("20240526083006_update")]
-    partial class update
->>>>>>>> 13c90fa7f74f8adc5d76300bc6cc5655cac72837:Back/src/ProEventos.Persistence/Migrations/20240526083006_update.Designer.cs
+    [Migration("20240526130139_update-lote")]
+    partial class updatelote
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-<<<<<<<< HEAD:Back/src/ProEventos.Persistence/Migrations/20250203084901_InitialMigration.Designer.cs
-                .HasAnnotation("ProductVersion", "9.0.1")
-========
                 .HasAnnotation("ProductVersion", "8.0.4")
->>>>>>>> 13c90fa7f74f8adc5d76300bc6cc5655cac72837:Back/src/ProEventos.Persistence/Migrations/20240526083006_update.Designer.cs
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -323,7 +314,7 @@ namespace ProEventos.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Preco")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("DECIMAL(18,2)");
 
                     b.Property<int>("Quantidade")
                         .HasColumnType("int");
@@ -496,7 +487,7 @@ namespace ProEventos.Persistence.Migrations
                     b.HasOne("ProEventos.Domain.Evento", "Evento")
                         .WithMany("PalestrantesEventos")
                         .HasForeignKey("EventoId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ProEventos.Domain.Palestrante", "Palestrante")
